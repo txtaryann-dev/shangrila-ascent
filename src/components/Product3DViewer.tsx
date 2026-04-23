@@ -58,13 +58,22 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
         >
           <div className="absolute inset-0 grid place-items-center">
             <motion.img
-              src={hero} alt="3D preview" className="w-3/4 h-3/4 object-contain drop-shadow-2xl"
+              src={hero} alt="3D preview"
+              className="relative z-10 w-3/4 h-3/4 object-contain
+                drop-shadow-[0_30px_40px_hsl(var(--accent-glow)/0.25)]
+                [filter:drop-shadow(0_18px_22px_rgba(0,0,0,0.55))_drop-shadow(0_30px_60px_hsl(var(--accent-glow)/0.18))]"
               animate={{ rotateY: angle }}
               transition={{ type: "spring", stiffness: 60, damping: 18 }}
               style={{ transformStyle: "preserve-3d" }}
               draggable={false}
             />
+            {/* Soft elliptical contact shadow on the glass stage */}
+            <div
+              aria-hidden
+              className="absolute bottom-[18%] left-1/2 -translate-x-1/2 h-6 w-[55%] rounded-[50%] bg-black/55 blur-2xl pointer-events-none"
+            />
           </div>
+
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 glass rounded-full px-4 py-1.5 text-xs text-muted-foreground">
             Drag to rotate · 360°
           </div>
