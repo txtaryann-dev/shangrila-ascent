@@ -43,20 +43,23 @@ function Phone({ rotationY }: { rotationY: number }) {
         <meshBasicMaterial map={photoTex} toneMapped={false} />
       </mesh>
 
-      {/* Front screen — deep black to match the obsidian aesthetic */}
+      {/* Front screen — exact Aurora Pro photo as the display */}
       <mesh position={[0, 0, D / 2 + 0.001]}>
         <planeGeometry args={[W - 0.12, H - 0.12]} />
-        <meshBasicMaterial color="#020308" toneMapped={false} />
+        <meshBasicMaterial map={photoTex} toneMapped={false} />
       </mesh>
 
-      {/* Subtle blue rim glow on screen edges */}
-      <mesh position={[0, 0, D / 2 + 0.0015]}>
+      {/* Glass overlay for reflections */}
+      <mesh position={[0, 0, D / 2 + 0.003]}>
         <planeGeometry args={[W - 0.12, H - 0.12]} />
-        <meshBasicMaterial
+        <meshPhysicalMaterial
           transparent
-          opacity={0.35}
-          color="#1a6cff"
-          blending={THREE.AdditiveBlending}
+          opacity={0.2}
+          roughness={0.04}
+          metalness={0}
+          transmission={0.5}
+          ior={1.5}
+          color="#ffffff"
         />
       </mesh>
 
