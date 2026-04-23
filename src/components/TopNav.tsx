@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Moon, Search, ShoppingBag, Sun, MapPin, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "./ThemeProvider";
+import { CurrencyToggle } from "./CurrencyToggle";
 
 const stock = [
   { city: "Kathmandu", status: "in", label: "In stock" },
@@ -75,6 +76,7 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
             </AnimatePresence>
           </div>
 
+          <div className="hidden sm:block mr-1"><CurrencyToggle /></div>
           <button aria-label="Search" className="p-2 rounded-full hover:bg-foreground/5 transition"><Search className="h-4 w-4" /></button>
           <button aria-label="Theme" onClick={toggle} className="p-2 rounded-full hover:bg-foreground/5 transition">
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
