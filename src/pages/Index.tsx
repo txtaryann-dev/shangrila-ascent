@@ -1,16 +1,38 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { HimalayanBackdrop } from "@/components/HimalayanBackdrop";
+import { TopNav } from "@/components/TopNav";
+import { MobileDock } from "@/components/MobileDock";
+import { Hero } from "@/components/Hero";
+import { BentoGrid } from "@/components/BentoGrid";
+import { Product3DViewer } from "@/components/Product3DViewer";
+import { LocalLogistics } from "@/components/LocalLogistics";
+import { Payments } from "@/components/Payments";
+import { Footer } from "@/components/Footer";
+import { SpecSheet } from "@/components/SpecSheet";
+import { ChatAssistant } from "@/components/ChatAssistant";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const [specOpen, setSpecOpen] = useState(false);
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
+    <ThemeProvider>
+      <div className="relative min-h-screen overflow-x-hidden">
+        <HimalayanBackdrop />
+        <TopNav />
+        <main>
+          <Hero onOpenSpec={() => setSpecOpen(true)} />
+          <BentoGrid />
+          <Product3DViewer onOpenSpec={() => setSpecOpen(true)} />
+          <LocalLogistics />
+          <Payments />
+        </main>
+        <Footer />
+        <MobileDock />
+        <SpecSheet open={specOpen} onClose={() => setSpecOpen(false)} />
+        <ChatAssistant />
+      </div>
+    </ThemeProvider>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
