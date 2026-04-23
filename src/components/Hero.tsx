@@ -17,7 +17,7 @@ export const Hero = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
           <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 text-xs text-muted-foreground mb-6">
             <Sparkles className="h-3 w-3 text-accent" /> New · Aurora Series 2026
           </div>
-          <h1 className="font-display text-5xl md:text-7xl font-bold leading-[0.95] tracking-tight text-center">
+          <h1 className="font-display text-5xl md:text-7xl font-bold leading-[0.95] tracking-tight">
             Innovation <br /> at the <span className="text-gradient">Peak.</span>
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-md">
