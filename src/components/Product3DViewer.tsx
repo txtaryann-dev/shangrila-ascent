@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { RotateCw, Maximize2 } from "lucide-react";
 import { useState } from "react";
-import hero from "@/assets/hero-device.jpg";
+import hero from "@/assets/inspect-device.png";
 
 /** Placeholder 3D viewer — rotates the product image with mouse drag. */
 export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
