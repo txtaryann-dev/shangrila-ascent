@@ -45,9 +45,11 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }} transition={{ duration: 0.9 }}
-          className="relative aspect-square glass-strong rounded-[2.5rem] overflow-hidden cursor-grab active:cursor-grabbing select-none"
+          initial={{ opacity: 0, scale: 0.92 }} whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="relative aspect-square rounded-[2.5rem] overflow-hidden cursor-grab active:cursor-grabbing select-none
+            bg-[radial-gradient(ellipse_at_50%_30%,hsl(var(--accent-glow)/0.18),transparent_60%),radial-gradient(ellipse_at_70%_80%,hsl(280_90%_60%/0.14),transparent_55%),linear-gradient(180deg,hsl(0_0%_6%),hsl(0_0%_2%))]
+            border border-white/10 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.06)]"
           onMouseDown={(e) => { setDragging(true); setStartX(e.clientX); }}
           onMouseUp={() => setDragging(false)}
           onMouseLeave={() => setDragging(false)}
@@ -56,28 +58,68 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
           onTouchEnd={() => setDragging(false)}
           onTouchMove={(e) => { if (dragging) { setAngle(a => a + (e.touches[0].clientX - startX) * 0.5); setStartX(e.touches[0].clientX); } }}
         >
+          {/* Perspective grid floor */}
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-1/2 opacity-[0.15]
+              [background-image:linear-gradient(to_right,hsl(var(--accent-glow)/0.6)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--accent-glow)/0.6)_1px,transparent_1px)]
+              [background-size:40px_40px]
+              [mask-image:linear-gradient(to_top,black,transparent_90%)]
+              [transform:perspective(600px)_rotateX(60deg)] origin-bottom"
+          />
+
+          {/* Ambient halos */}
+          <div aria-hidden className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-accent/20 blur-3xl" />
+          <div aria-hidden className="absolute -bottom-24 -right-16 h-80 w-80 rounded-full bg-[hsl(280_90%_60%/0.18)] blur-3xl" />
+
+          {/* Spotlight cone */}
+          <div
+            aria-hidden
+            className="absolute top-0 left-1/2 -translate-x-1/2 h-2/3 w-2/3
+              bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%/0.08),transparent_70%)] pointer-events-none"
+          />
+
           <div className="absolute inset-0 grid place-items-center">
             <motion.img
               src={hero} alt="3D preview"
-              className="relative z-10 w-3/4 h-3/4 object-contain
-                drop-shadow-[0_30px_40px_hsl(var(--accent-glow)/0.25)]
-                [filter:drop-shadow(0_18px_22px_rgba(0,0,0,0.55))_drop-shadow(0_30px_60px_hsl(var(--accent-glow)/0.18))]"
-              animate={{ rotateY: angle }}
-              transition={{ type: "spring", stiffness: 60, damping: 18 }}
+              className="relative z-10 w-[78%] h-[78%] object-contain
+                [filter:drop-shadow(0_22px_28px_rgba(0,0,0,0.7))_drop-shadow(0_40px_80px_hsl(var(--accent-glow)/0.28))_drop-shadow(0_0_40px_hsl(280_90%_60%/0.15))]"
+              animate={{ rotateY: angle, y: [0, -8, 0] }}
+              transition={{
+                rotateY: { type: "spring", stiffness: 60, damping: 18 },
+                y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+              }}
               style={{ transformStyle: "preserve-3d" }}
               draggable={false}
             />
-            {/* Soft elliptical contact shadow on the glass stage */}
+
+            {/* Glass pedestal */}
             <div
               aria-hidden
-              className="absolute bottom-[18%] left-1/2 -translate-x-1/2 h-6 w-[55%] rounded-[50%] bg-black/55 blur-2xl pointer-events-none"
+              className="absolute bottom-[14%] left-1/2 -translate-x-1/2 h-3 w-[60%] rounded-[50%]
+                bg-gradient-to-r from-transparent via-white/10 to-transparent
+                shadow-[0_0_40px_hsl(var(--accent-glow)/0.4)]"
+            />
+            {/* Soft elliptical contact shadow */}
+            <div
+              aria-hidden
+              className="absolute bottom-[12%] left-1/2 -translate-x-1/2 h-8 w-[55%] rounded-[50%] bg-black/70 blur-2xl pointer-events-none"
             />
           </div>
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 glass rounded-full px-4 py-1.5 text-xs text-muted-foreground">
+          {/* Corner crosshair markers */}
+          <div aria-hidden className="absolute top-6 right-6 h-3 w-3 border-t border-r border-white/30" />
+          <div aria-hidden className="absolute bottom-6 left-6 h-3 w-3 border-b border-l border-white/30" />
+
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 glass rounded-full px-4 py-1.5 text-xs text-muted-foreground backdrop-blur-xl">
             Drag to rotate · 360°
           </div>
-          <div className="absolute top-4 left-4 glass rounded-full px-3 py-1 text-[10px] uppercase tracking-wider text-accent">3D Preview</div>
+          <div className="absolute top-4 left-4 glass rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-accent backdrop-blur-xl">
+            ◉ 3D Preview
+          </div>
+          <div className="absolute top-4 right-4 glass rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground backdrop-blur-xl">
+            Live
+          </div>
         </motion.div>
       </div>
     </section>
