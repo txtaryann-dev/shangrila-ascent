@@ -13,10 +13,20 @@ function Phone({ rotationY }: { rotationY: number }) {
     photoTex.anisotropy = 8;
   }, [photoTex]);
 
+  // Critically-damped spring toward the target rotation for smooth, jitter-free motion.
+  const current = useRef(THREE.MathUtils.degToRad(rotationY));
+  const velocity = useRef(0);
   useFrame((_, dt) => {
     if (!group.current) return;
+    // Clamp dt to avoid spikes after tab refocus / long frames.
+    const t = Math.min(dt, 1 / 30);
     const target = THREE.MathUtils.degToRad(rotationY);
-    group.current.rotation.y += (target - group.current.rotation.y) * Math.min(1, dt * 4);
+    const stiffness = 90;   // springiness
+    const damping = 18;     // ~critical for stiffness=90
+    const accel = (target - current.current) * stiffness - velocity.current * damping;
+    velocity.current += accel * t;
+    current.current += velocity.current * t;
+    group.current.rotation.y = current.current;
   });
 
   const W = 1.5;
