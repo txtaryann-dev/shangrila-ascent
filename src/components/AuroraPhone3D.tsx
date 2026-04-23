@@ -118,8 +118,8 @@ function Phone({ rotationY }: { rotationY: number }) {
           [-0.18, -0.18],
         ].map(([x, y], i) => (
           <group key={i} position={[x, y, -0.04]}>
-            <mesh>
-              <cylinderGeometry args={[0.14, 0.14, 0.08, 32]} rotation={[Math.PI / 2, 0, 0]} />
+            <mesh rotation={[Math.PI / 2, 0, 0]}>
+              <cylinderGeometry args={[0.14, 0.14, 0.08, 32]} />
               <meshPhysicalMaterial color="#050505" metalness={1} roughness={0.2} />
             </mesh>
             <mesh position={[0, 0, -0.045]} rotation={[Math.PI / 2, 0, 0]}>
