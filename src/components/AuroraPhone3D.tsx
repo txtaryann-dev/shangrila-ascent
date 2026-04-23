@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { Environment, ContactShadows, Float, RoundedBox } from "@react-three/drei";
-import { Suspense, useMemo, useRef } from "react";
+import { ContactShadows, Float, RoundedBox } from "@react-three/drei";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import auroraPhoto from "@/assets/obsidian-phone.jpg";
 
@@ -10,7 +10,11 @@ function Phone({ rotationY }: { rotationY: number }) {
 
   useMemo(() => {
     photoTex.colorSpace = THREE.SRGBColorSpace;
-    photoTex.anisotropy = 8;
+    photoTex.anisotropy = 4;
+    photoTex.generateMipmaps = true;
+    photoTex.minFilter = THREE.LinearMipmapLinearFilter;
+    photoTex.magFilter = THREE.LinearFilter;
+    photoTex.needsUpdate = true;
   }, [photoTex]);
 
   // Critically-damped spring toward the target rotation for smooth, jitter-free motion.
@@ -18,11 +22,10 @@ function Phone({ rotationY }: { rotationY: number }) {
   const velocity = useRef(0);
   useFrame((_, dt) => {
     if (!group.current) return;
-    // Clamp dt to avoid spikes after tab refocus / long frames.
     const t = Math.min(dt, 1 / 30);
     const target = THREE.MathUtils.degToRad(rotationY);
-    const stiffness = 90;   // springiness
-    const damping = 18;     // ~critical for stiffness=90
+    const stiffness = 90;
+    const damping = 18;
     const accel = (target - current.current) * stiffness - velocity.current * damping;
     velocity.current += accel * t;
     current.current += velocity.current * t;
@@ -36,15 +39,9 @@ function Phone({ rotationY }: { rotationY: number }) {
 
   return (
     <group ref={group}>
-      {/* Body - titanium frame with blue edge glow vibe */}
-      <RoundedBox args={[W, H, D]} radius={R} smoothness={8} castShadow receiveShadow>
-        <meshPhysicalMaterial
-          color="#0d0d10"
-          metalness={1}
-          roughness={0.3}
-          clearcoat={0.7}
-          clearcoatRoughness={0.2}
-        />
+      {/* Body — cheaper standard material (no clearcoat / transmission) */}
+      <RoundedBox args={[W, H, D]} radius={R} smoothness={4}>
+        <meshStandardMaterial color="#0d0d10" metalness={1} roughness={0.32} />
       </RoundedBox>
 
       {/* Back cover — exact Aurora Pro photo */}
@@ -59,30 +56,14 @@ function Phone({ rotationY }: { rotationY: number }) {
         <meshBasicMaterial map={photoTex} toneMapped={false} />
       </mesh>
 
-      {/* Glass overlay for reflections */}
+      {/* Single subtle glass overlay (transparent only — no transmission) */}
       <mesh position={[0, 0, D / 2 + 0.003]}>
         <planeGeometry args={[W - 0.12, H - 0.12]} />
-        <meshPhysicalMaterial
+        <meshStandardMaterial
           transparent
-          opacity={0.2}
-          roughness={0.04}
+          opacity={0.12}
+          roughness={0.05}
           metalness={0}
-          transmission={0.5}
-          ior={1.5}
-          color="#ffffff"
-        />
-      </mesh>
-
-      {/* Glass overlay for reflections */}
-      <mesh position={[0, 0, D / 2 + 0.003]}>
-        <planeGeometry args={[W - 0.12, H - 0.12]} />
-        <meshPhysicalMaterial
-          transparent
-          opacity={0.2}
-          roughness={0.04}
-          metalness={0}
-          transmission={0.5}
-          ior={1.5}
           color="#ffffff"
         />
       </mesh>
@@ -96,15 +77,15 @@ function Phone({ rotationY }: { rotationY: number }) {
       {/* Side buttons */}
       <mesh position={[W / 2 + 0.005, 0.4, 0]}>
         <boxGeometry args={[0.02, 0.4, 0.08]} />
-        <meshPhysicalMaterial color="#2a2a2d" metalness={1} roughness={0.3} />
+        <meshStandardMaterial color="#2a2a2d" metalness={1} roughness={0.3} />
       </mesh>
       <mesh position={[-W / 2 - 0.005, 0.55, 0]}>
         <boxGeometry args={[0.02, 0.18, 0.08]} />
-        <meshPhysicalMaterial color="#2a2a2d" metalness={1} roughness={0.3} />
+        <meshStandardMaterial color="#2a2a2d" metalness={1} roughness={0.3} />
       </mesh>
       <mesh position={[-W / 2 - 0.005, 0.25, 0]}>
         <boxGeometry args={[0.02, 0.18, 0.08]} />
-        <meshPhysicalMaterial color="#2a2a2d" metalness={1} roughness={0.3} />
+        <meshStandardMaterial color="#2a2a2d" metalness={1} roughness={0.3} />
       </mesh>
     </group>
   );
@@ -115,34 +96,60 @@ interface AuroraPhone3DProps {
 }
 
 export const AuroraPhone3D = ({ rotationY }: AuroraPhone3DProps) => {
+  // Lazy-mount the canvas only when the viewer scrolls into view to cut initial cost.
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setVisible(true);
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <Canvas
-      shadows
-      dpr={[1, 2]}
-      camera={{ position: [0, 0, 5.2], fov: 32 }}
-      gl={{ antialias: true, alpha: true }}
-    >
-      <Suspense fallback={null}>
-        <ambientLight intensity={0.35} />
-        <directionalLight position={[3, 4, 5]} intensity={1.3} castShadow />
-        <directionalLight position={[-4, 2, -3]} intensity={0.7} color="#7aa8ff" />
-        <pointLight position={[0, -2, 3]} intensity={0.5} color="#1a6cff" />
+    <div ref={wrapRef} className="absolute inset-0">
+      {visible && (
+        <Canvas
+          dpr={[1, 1.5]}
+          camera={{ position: [0, 0, 5.2], fov: 32 }}
+          gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+          frameloop="always"
+        >
+          <Suspense fallback={null}>
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[3, 4, 5]} intensity={1.3} />
+            <directionalLight position={[-4, 2, -3]} intensity={0.7} color="#7aa8ff" />
+            <pointLight position={[0, -2, 3]} intensity={0.5} color="#1a6cff" />
 
-        <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.4}>
-          <Phone rotationY={rotationY} />
-        </Float>
+            <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.4}>
+              <Phone rotationY={rotationY} />
+            </Float>
 
-        <ContactShadows
-          position={[0, -1.7, 0]}
-          opacity={0.7}
-          scale={6}
-          blur={2.6}
-          far={3}
-          color="#000000"
-        />
-
-        <Environment preset="city" />
-      </Suspense>
-    </Canvas>
+            <ContactShadows
+              position={[0, -1.7, 0]}
+              opacity={0.55}
+              scale={6}
+              blur={2.6}
+              far={3}
+              resolution={256}
+              color="#000000"
+            />
+          </Suspense>
+        </Canvas>
+      )}
+    </div>
   );
 };
