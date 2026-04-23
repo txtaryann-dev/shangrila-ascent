@@ -16,7 +16,7 @@ export const MobileDock = () => (
     transition={{ delay: 0.3, duration: 0.6 }}
     className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50"
   >
-    <div className="glass-strong rounded-full px-3 py-2 flex items-center gap-1">
+    <div className="glass-strong squircle rounded-full px-3 py-2 flex items-center gap-1">
       {items.map(({ icon: Icon, label }, i) => (
         <button key={label} aria-label={label}
           className={`elastic grid place-items-center h-11 w-11 rounded-full ${i === 0 ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}>
