@@ -50,13 +50,23 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
           className="relative aspect-square rounded-[2.5rem] overflow-hidden cursor-grab active:cursor-grabbing select-none
             bg-[radial-gradient(ellipse_at_50%_30%,hsl(var(--accent-glow)/0.2),transparent_60%),radial-gradient(ellipse_at_70%_80%,hsl(280_90%_60%/0.16),transparent_55%),linear-gradient(180deg,hsl(0_0%_6%),hsl(0_0%_2%))]
             border border-white/10 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.06)]"
-          onMouseDown={(e) => { setDragging(true); setStartX(e.clientX); }}
-          onMouseUp={() => setDragging(false)}
-          onMouseLeave={() => setDragging(false)}
-          onMouseMove={(e) => { if (dragging) { setAngle(a => a + (e.clientX - startX) * 0.5); setStartX(e.clientX); } }}
-          onTouchStart={(e) => { setDragging(true); setStartX(e.touches[0].clientX); }}
-          onTouchEnd={() => setDragging(false)}
-          onTouchMove={(e) => { if (dragging) { setAngle(a => a + (e.touches[0].clientX - startX) * 0.5); setStartX(e.touches[0].clientX); } }}
+          onPointerDown={(e) => {
+            (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+            setDragging(true); setStartX(e.clientX);
+          }}
+          onPointerUp={(e) => {
+            (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
+            setDragging(false);
+          }}
+          onPointerCancel={() => setDragging(false)}
+          onPointerLeave={() => setDragging(false)}
+          onPointerMove={(e) => {
+            if (!dragging) return;
+            const dx = e.clientX - startX;
+            // Lower sensitivity for premium feel; spring handles smoothing
+            setAngle(a => a + dx * 0.25);
+            setStartX(e.clientX);
+          }}
         >
           {/* Perspective grid floor */}
           <div
