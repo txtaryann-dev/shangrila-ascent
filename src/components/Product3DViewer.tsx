@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { RotateCw, Maximize2 } from "lucide-react";
 import { useState } from "react";
-import hero from "@/assets/inspect-device.png";
+import { AuroraPhone3D } from "./AuroraPhone3D";
 
-/** Placeholder 3D viewer — rotates the product image with mouse drag. */
+/** Real-time 3D viewer of the Aurora Pro device. */
 export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
   const [angle, setAngle] = useState(15);
   const [dragging, setDragging] = useState(false);
@@ -16,10 +16,10 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
           initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.8 }}
         >
-          <p className="text-sm text-accent font-medium tracking-wider uppercase">Interactive</p>
+          <p className="text-sm text-accent font-medium tracking-wider uppercase">Interactive · Aurora Pro</p>
           <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight mt-2">Inspect every angle.</h2>
           <p className="text-muted-foreground mt-4 max-w-md">
-            Drag to rotate. Pinch to zoom. A studio-grade 3D preview that brings the device into your living room — no AR app required.
+            A real-time WebGL model of the Aurora Pro. Drag to rotate, watch light dance across titanium edges, and explore every contour from your browser.
           </p>
           <div className="mt-6 flex gap-3">
             <button className="elastic glass px-5 py-2.5 rounded-full text-sm inline-flex items-center gap-2"
@@ -33,8 +33,8 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
           <ul className="mt-8 space-y-3 text-sm">
             {[
               "Real-time WebGL rendering",
-              "Touch & mouse controlled",
-              "Material accurate finishes",
+              "Physically-based titanium materials",
+              "Touch & mouse controlled · 360°",
             ].map(t => (
               <li key={t} className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" />
@@ -48,7 +48,7 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
           initial={{ opacity: 0, scale: 0.92 }} whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="relative aspect-square rounded-[2.5rem] overflow-hidden cursor-grab active:cursor-grabbing select-none
-            bg-[radial-gradient(ellipse_at_50%_30%,hsl(var(--accent-glow)/0.18),transparent_60%),radial-gradient(ellipse_at_70%_80%,hsl(280_90%_60%/0.14),transparent_55%),linear-gradient(180deg,hsl(0_0%_6%),hsl(0_0%_2%))]
+            bg-[radial-gradient(ellipse_at_50%_30%,hsl(var(--accent-glow)/0.2),transparent_60%),radial-gradient(ellipse_at_70%_80%,hsl(280_90%_60%/0.16),transparent_55%),linear-gradient(180deg,hsl(0_0%_6%),hsl(0_0%_2%))]
             border border-white/10 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.06)]"
           onMouseDown={(e) => { setDragging(true); setStartX(e.clientX); }}
           onMouseUp={() => setDragging(false)}
@@ -61,7 +61,7 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
           {/* Perspective grid floor */}
           <div
             aria-hidden
-            className="absolute inset-x-0 bottom-0 h-1/2 opacity-[0.15]
+            className="absolute inset-x-0 bottom-0 h-1/2 opacity-[0.12]
               [background-image:linear-gradient(to_right,hsl(var(--accent-glow)/0.6)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--accent-glow)/0.6)_1px,transparent_1px)]
               [background-size:40px_40px]
               [mask-image:linear-gradient(to_top,black,transparent_90%)]
@@ -69,56 +69,26 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
           />
 
           {/* Ambient halos */}
-          <div aria-hidden className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-accent/20 blur-3xl" />
-          <div aria-hidden className="absolute -bottom-24 -right-16 h-80 w-80 rounded-full bg-[hsl(280_90%_60%/0.18)] blur-3xl" />
+          <div aria-hidden className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-accent/20 blur-3xl pointer-events-none" />
+          <div aria-hidden className="absolute -bottom-24 -right-16 h-80 w-80 rounded-full bg-[hsl(280_90%_60%/0.18)] blur-3xl pointer-events-none" />
 
-          {/* Spotlight cone */}
-          <div
-            aria-hidden
-            className="absolute top-0 left-1/2 -translate-x-1/2 h-2/3 w-2/3
-              bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%/0.08),transparent_70%)] pointer-events-none"
-          />
-
-          <div className="absolute inset-0 grid place-items-center">
-            <motion.img
-              src={hero} alt="3D preview"
-              className="relative z-10 w-[78%] h-[78%] object-contain
-                [filter:drop-shadow(0_22px_28px_rgba(0,0,0,0.7))_drop-shadow(0_40px_80px_hsl(var(--accent-glow)/0.28))_drop-shadow(0_0_40px_hsl(280_90%_60%/0.15))]"
-              animate={{ rotateY: angle, y: [0, -8, 0] }}
-              transition={{
-                rotateY: { type: "spring", stiffness: 60, damping: 18 },
-                y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-              }}
-              style={{ transformStyle: "preserve-3d" }}
-              draggable={false}
-            />
-
-            {/* Glass pedestal */}
-            <div
-              aria-hidden
-              className="absolute bottom-[14%] left-1/2 -translate-x-1/2 h-3 w-[60%] rounded-[50%]
-                bg-gradient-to-r from-transparent via-white/10 to-transparent
-                shadow-[0_0_40px_hsl(var(--accent-glow)/0.4)]"
-            />
-            {/* Soft elliptical contact shadow */}
-            <div
-              aria-hidden
-              className="absolute bottom-[12%] left-1/2 -translate-x-1/2 h-8 w-[55%] rounded-[50%] bg-black/70 blur-2xl pointer-events-none"
-            />
+          {/* 3D Canvas */}
+          <div className="absolute inset-0">
+            <AuroraPhone3D rotationY={angle} />
           </div>
 
           {/* Corner crosshair markers */}
           <div aria-hidden className="absolute top-6 right-6 h-3 w-3 border-t border-r border-white/30" />
           <div aria-hidden className="absolute bottom-6 left-6 h-3 w-3 border-b border-l border-white/30" />
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 glass rounded-full px-4 py-1.5 text-xs text-muted-foreground backdrop-blur-xl">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 glass rounded-full px-4 py-1.5 text-xs text-muted-foreground backdrop-blur-xl pointer-events-none">
             Drag to rotate · 360°
           </div>
-          <div className="absolute top-4 left-4 glass rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-accent backdrop-blur-xl">
-            ◉ 3D Preview
+          <div className="absolute top-4 left-4 glass rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-accent backdrop-blur-xl pointer-events-none">
+            ◉ Live 3D
           </div>
-          <div className="absolute top-4 right-4 glass rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground backdrop-blur-xl">
-            Live
+          <div className="absolute top-4 right-4 glass rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground backdrop-blur-xl pointer-events-none">
+            WebGL
           </div>
         </motion.div>
       </div>
