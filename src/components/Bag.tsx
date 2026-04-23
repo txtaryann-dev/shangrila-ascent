@@ -60,7 +60,7 @@ export const Bag = ({ open, onClose }: { open: boolean; onClose: () => void }) =
                 </div>
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <span>Delivery to Kathmandu</span>
-                  <span className="text-emerald-400">Free · Tomorrow</span>
+                  <span className="text-[hsl(var(--accent-glow))]">Free · Tomorrow</span>
                 </div>
                 <button className="elastic w-full py-3 rounded-full bg-foreground text-background text-sm font-medium">
                   Checkout
