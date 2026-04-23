@@ -65,22 +65,39 @@ const Card = ({ t, i, onCompare }: { t: T; i: number; onCompare: (title: string)
 };
 
 export const BentoGrid = ({ onCompare }: { onCompare: (title: string) => void }) => (
-  <section className="relative py-32" id="shop">
+  <section className="relative pt-16 pb-32 md:pt-24" id="shop">
+    {/* Ambient halo */}
+    <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-[600px] pointer-events-none">
+      <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[900px] rounded-full bg-[hsl(var(--accent-glow)/0.14)] blur-[160px]" />
+      <div className="absolute right-1/4 top-40 h-[300px] w-[400px] rounded-full bg-[hsl(var(--accent-glow-2)/0.12)] blur-[140px]" />
+    </div>
+
     <div className="container">
       <motion.div
-        initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+        initial={{ opacity: 0, y: 24, filter: "blur(12px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.7 }}
-        className="flex items-end justify-between mb-12 gap-4"
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        className="text-center max-w-3xl mx-auto mb-16"
       >
-        <div>
-          <p className="text-xs text-[hsl(var(--accent-glow))] font-medium tracking-[0.2em] uppercase">The Lineup</p>
-          <h2 className="font-display text-4xl md:text-6xl font-bold tracking-tight mt-3">A studio for every craft.</h2>
+        <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 text-[11px] text-muted-foreground mb-6">
+          <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--accent-glow))] shadow-[0_0_8px_hsl(var(--accent-glow))]" />
+          The Lineup · 2026
         </div>
-        <a href="#" className="hidden sm:inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition">
-          View all <ArrowUpRight className="h-4 w-4" />
-        </a>
+        <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight leading-[0.98]">
+          A studio for <span className="text-gradient">every craft.</span>
+        </h1>
+        <p className="text-muted-foreground mt-5 text-base md:text-lg max-w-xl mx-auto">
+          Six devices, one obsession. Hand-picked electronics engineered for the way you create, work and move across Nepal.
+        </p>
+        <div className="mt-8 flex justify-center gap-3">
+          <a href="#viewer" className="elastic px-6 py-2.5 rounded-full bg-foreground text-background text-sm font-medium">
+            Explore Aurora
+          </a>
+          <a href="#delivery" className="elastic glass-strong px-6 py-2.5 rounded-full text-sm font-medium inline-flex items-center gap-1.5">
+            Check delivery <ArrowUpRight className="h-3.5 w-3.5" />
+          </a>
+        </div>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 md:auto-rows-[220px] gap-4">
