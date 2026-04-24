@@ -14,6 +14,7 @@ import { SpecSheet } from "@/components/SpecSheet";
 import { ChatAssistant } from "@/components/ChatAssistant";
 import { QuickCompare } from "@/components/QuickCompare";
 import { Bag } from "@/components/Bag";
+import { Wholesale } from "@/components/Wholesale";
 
 import phone from "@/assets/obsidian-phone.jpg";
 import laptop from "@/assets/obsidian-laptop.jpg";
@@ -25,6 +26,7 @@ const chapters = [
   { id: "ch-laptops", label: "Laptops" },
   { id: "ch-audio", label: "Audio" },
   { id: "ch-wearables", label: "Wearables" },
+  { id: "ch-wholesale", label: "Wholesale" },
 ];
 
 const Index = () => {
@@ -128,6 +130,7 @@ const Index = () => {
               ]}
             />
 
+            <Wholesale />
             <LocalLogistics />
             <Payments />
           </main>
