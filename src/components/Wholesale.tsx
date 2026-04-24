@@ -1,8 +1,9 @@
 import { useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, Upload, Plus, Minus, Trash2, FileJson, FileSpreadsheet, Sun, Moon } from "lucide-react";
+import { Download, Upload, Plus, Minus, Trash2, FileJson, FileSpreadsheet, Sun, Moon, ShoppingBag } from "lucide-react";
 import { useCurrency } from "./CurrencyProvider";
 import { useTheme } from "./ThemeProvider";
+import { useCart } from "./CartProvider";
 
 /* ---------- Catalog ---------- */
 interface CatalogItem {
@@ -80,9 +81,10 @@ const downloadFile = (filename: string, content: string, mime: string) => {
 };
 
 /* ---------- Component ---------- */
-export const Wholesale = () => {
+export const Wholesale = ({ onOpenBag }: { onOpenBag?: () => void }) => {
   const { format, currency } = useCurrency();
   const { theme, toggle } = useTheme();
+  const { addMany } = useCart();
   const [catalog, setCatalog] = useState<CatalogItem[]>(DEFAULT_CATALOG);
   const [qty, setQty] = useState<Record<string, number>>({});
   const [toast, setToast] = useState<string | null>(null);
