@@ -163,6 +163,24 @@ export const Wholesale = ({ onOpenBag }: { onOpenBag?: () => void }) => {
     showToast("Cart saved");
   };
 
+  /* --- add quote lines into the site cart --- */
+  const addAllToCart = () => {
+    if (!lines.length) return showToast("Add quantities first");
+    addMany(
+      lines.map(l => ({
+        sku: l.sku,
+        name: l.name,
+        priceNPR: Math.round(l.priceNPR * (1 - l.tier.pct / 100)),
+        listPriceNPR: l.priceNPR,
+        qty: l.q,
+        note: l.tier.pct > 0 ? `Wholesale −${l.tier.pct}% · ${l.tier.label}` : undefined,
+      }))
+    );
+    showToast(`${grand.units} unit${grand.units > 1 ? "s" : ""} added to bag`);
+    setQty({});
+    setTimeout(() => onOpenBag?.(), 350);
+  };
+
   /* --- import --- */
   const onPickFile = (mode: "catalog" | "quote" | "cart") => {
     setImportMode(mode);
@@ -300,6 +318,12 @@ export const Wholesale = ({ onOpenBag }: { onOpenBag?: () => void }) => {
           <button onClick={exportCartJSON} className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs">
             <Download className="h-3.5 w-3.5" /> Export cart
           </button>
+          <button
+            onClick={addAllToCart}
+            className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs text-[hsl(var(--accent-glow))] hover:text-foreground"
+          >
+            <ShoppingBag className="h-3.5 w-3.5" /> Add all to cart
+          </button>
 
           <button
             onClick={() => setQty({})}
@@ -386,9 +410,17 @@ export const Wholesale = ({ onOpenBag }: { onOpenBag?: () => void }) => {
               Inclusive of VAT. Final pricing confirmed on PO.
             </p>
             <button
+              onClick={addAllToCart}
+              disabled={!lines.length}
+              className="mt-5 w-full elastic px-4 py-3 rounded-full bg-foreground text-background text-sm font-semibold disabled:opacity-40 flex items-center justify-center gap-2"
+            >
+              <ShoppingBag className="h-4 w-4" />
+              Add all to cart · checkout
+            </button>
+            <button
               onClick={exportQuoteCSV}
               disabled={!lines.length}
-              className="mt-5 w-full elastic px-4 py-3 rounded-full bg-foreground text-background text-sm font-semibold disabled:opacity-40"
+              className="mt-2 w-full elastic px-4 py-2.5 rounded-full glass text-xs text-muted-foreground hover:text-foreground disabled:opacity-40"
             >
               Generate quote (CSV)
             </button>
