@@ -132,7 +132,7 @@ const Index = () => {
               ]}
             />
 
-            <Wholesale />
+            <Wholesale onOpenBag={() => setBagOpen(true)} />
             <LocalLogistics />
             <Payments />
           </main>
@@ -147,6 +147,7 @@ const Index = () => {
           />
           <ChatAssistant />
         </div>
+        </CartProvider>
       </CurrencyProvider>
     </ThemeProvider>
   );
