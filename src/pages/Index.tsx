@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { CurrencyProvider } from "@/components/CurrencyProvider";
+import { CartProvider } from "@/components/CartProvider";
 import { TopNav } from "@/components/TopNav";
 import { MobileDock } from "@/components/MobileDock";
 import { BentoGrid } from "@/components/BentoGrid";
@@ -40,6 +41,7 @@ const Index = () => {
   return (
     <ThemeProvider>
       <CurrencyProvider>
+        <CartProvider>
         <div className="relative min-h-screen overflow-x-hidden bg-background">
           <TopNav onOpenBag={() => setBagOpen(true)} />
           <ChapterProgress sections={chapters} />
@@ -130,7 +132,7 @@ const Index = () => {
               ]}
             />
 
-            <Wholesale />
+            <Wholesale onOpenBag={() => setBagOpen(true)} />
             <LocalLogistics />
             <Payments />
           </main>
@@ -145,6 +147,7 @@ const Index = () => {
           />
           <ChatAssistant />
         </div>
+        </CartProvider>
       </CurrencyProvider>
     </ThemeProvider>
   );
