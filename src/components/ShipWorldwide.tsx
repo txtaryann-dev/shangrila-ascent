@@ -401,7 +401,7 @@ const isoNumericToAlpha3: Record<string, string> = {
   "752": "SWE", "756": "CHE", "760": "SYR", "762": "TJK", "764": "THA", "768": "TGO", "780": "TTO",
   "784": "ARE", "788": "TUN", "792": "TUR", "795": "TKM", "800": "UGA", "804": "UKR", "807": "MKD",
   "818": "EGY", "826": "GBR", "834": "TZA", "840": "USA", "854": "BFA", "858": "URY", "860": "UZB",
-  "862": "VEN", "887": "YEM", "894": "ZMB", "242": "FJI", "604": "PER",
+  "862": "VEN", "887": "YEM", "894": "ZMB", "242": "FJI",
 };
 
 // Suppress unused import warning
