@@ -32,7 +32,7 @@ const TIERS = [
 const tierFor = (q: number) => TIERS.find(t => q >= t.min && q <= t.max) ?? TIERS[0];
 
 /* ---------- CSV utils ---------- */
-const toCSV = (rows: Record<string, unknown>[]) => {
+const toCSV = (rows: Array<Record<string, unknown>>) => {
   if (!rows.length) return "";
   const keys = Object.keys(rows[0]);
   const esc = (v: unknown) => {
@@ -121,7 +121,7 @@ export const Wholesale = () => {
 
   /* --- export --- */
   const exportCatalogCSV = () => {
-    downloadFile("shangrila-catalog.csv", toCSV(catalog), "text/csv");
+    downloadFile("shangrila-catalog.csv", toCSV(catalog as unknown as Array<Record<string, unknown>>), "text/csv");
     showToast("Catalog exported as CSV");
   };
   const exportCatalogJSON = () => {
