@@ -16,6 +16,7 @@ import { ChatAssistant } from "@/components/ChatAssistant";
 import { QuickCompare } from "@/components/QuickCompare";
 import { Bag } from "@/components/Bag";
 import { Wholesale } from "@/components/Wholesale";
+import { ShipWorldwide } from "@/components/ShipWorldwide";
 
 import phone from "@/assets/obsidian-phone.jpg";
 import laptop from "@/assets/obsidian-laptop.jpg";
@@ -28,6 +29,7 @@ const chapters = [
   { id: "ch-audio", label: "Audio" },
   { id: "ch-wearables", label: "Wearables" },
   { id: "ch-wholesale", label: "Wholesale" },
+  { id: "ch-worldwide", label: "Worldwide" },
 ];
 
 const Index = () => {
@@ -133,6 +135,7 @@ const Index = () => {
             />
 
             <Wholesale onOpenBag={() => setBagOpen(true)} />
+            <ShipWorldwide />
             <LocalLogistics />
             <Payments />
           </main>
