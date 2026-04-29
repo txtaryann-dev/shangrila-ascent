@@ -30,15 +30,16 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
       className="fixed top-4 left-1/2 z-50 -translate-x-1/2 px-4 w-[min(1200px,calc(100%-2rem))]"
     >
       <div className="glass-strong squircle rounded-full flex items-center justify-between px-5 py-2.5">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <a href="#" className="flex items-center gap-2 font-semibold tracking-tight text-[15px]">
             <span className="grid h-7 w-7 place-items-center rounded-full bg-foreground text-background text-[11px] font-bold">SW</span>
             <span className="hidden sm:inline">Shangrila</span>
           </a>
           <button
             aria-label="Toggle theme"
+            title={theme === "dark" ? "Switch to light" : "Switch to dark"}
             onClick={toggle}
-            className="ml-1 p-2 rounded-full hover:bg-foreground/5 transition border border-border/40"
+            className="inline-flex items-center justify-center h-8 w-8 rounded-full border border-border/40 bg-background/40 hover:bg-foreground/5 transition shrink-0"
           >
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
