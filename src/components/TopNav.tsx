@@ -87,9 +87,6 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
 
           <div className="hidden sm:block mr-1"><CurrencyToggle /></div>
           <button aria-label="Search" className="p-2 rounded-full hover:bg-foreground/5 transition"><Search className="h-4 w-4" /></button>
-          <button aria-label="Theme" onClick={toggle} className="p-2 rounded-full hover:bg-foreground/5 transition">
-            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </button>
           <button aria-label="Bag" onClick={onOpenBag} className="p-2 rounded-full hover:bg-foreground/5 transition relative">
             <ShoppingBag className="h-4 w-4" />
             <span className="absolute -top-0.5 -right-0.5 h-4 w-4 grid place-items-center rounded-full bg-[hsl(var(--accent-glow))] text-[10px] font-semibold text-white">2</span>
