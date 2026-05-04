@@ -20,12 +20,14 @@ export const ChatAssistant = () => {
     <>
       <motion.button
         initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1, type: "spring" }}
-        whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.95 }}
         onClick={() => setOpen(o => !o)}
-        aria-label="Open assistant"
-        className="fixed bottom-24 md:bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-foreground text-background grid place-items-center shadow-2xl"
+        aria-label="Chat with Support"
+        title="Chat with Support"
+        className="fixed bottom-24 md:bottom-6 right-6 z-50 inline-flex items-center gap-2 pl-4 pr-5 py-3 rounded-full bg-foreground text-background shadow-2xl hover:shadow-[0_0_40px_hsl(var(--accent-glow)/0.55)] transition-shadow"
       >
         {open ? <X className="h-5 w-5" /> : <MessageCircle className="h-5 w-5" />}
+        <span className="hidden sm:inline text-sm font-medium">{open ? "Close" : "Chat with Support"}</span>
         {!open && <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-accent animate-pulse" />}
       </motion.button>
 
