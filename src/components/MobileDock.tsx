@@ -1,12 +1,13 @@
-import { Home, Laptop, Smartphone, Headphones, User } from "lucide-react";
+import { Home, Laptop, Smartphone, Headphones, User, Camera } from "lucide-react";
 import { motion } from "framer-motion";
 
 const items = [
-  { icon: Home, label: "Home" },
-  { icon: Smartphone, label: "Phones" },
-  { icon: Laptop, label: "Laptops" },
-  { icon: Headphones, label: "Audio" },
-  { icon: User, label: "Account" },
+  { icon: Home, label: "Home", href: "#" },
+  { icon: Smartphone, label: "Phones", href: "#ch-phones" },
+  { icon: Laptop, label: "Laptops", href: "#ch-laptops" },
+  { icon: Headphones, label: "Audio", href: "#ch-audio" },
+  { icon: Camera, label: "Cameras", href: "#ch-cameras" },
+  { icon: User, label: "Account", href: "#" },
 ];
 
 export const MobileDock = () => (
@@ -17,11 +18,11 @@ export const MobileDock = () => (
     className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50"
   >
     <div className="glass-strong squircle rounded-full px-3 py-2 flex items-center gap-1">
-      {items.map(({ icon: Icon, label }, i) => (
-        <button key={label} aria-label={label}
+      {items.map(({ icon: Icon, label, href }, i) => (
+        <a key={label} href={href} aria-label={label}
           className={`elastic grid place-items-center h-11 w-11 rounded-full ${i === 0 ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}>
           <Icon className="h-5 w-5" />
-        </button>
+        </a>
       ))}
     </div>
   </motion.nav>

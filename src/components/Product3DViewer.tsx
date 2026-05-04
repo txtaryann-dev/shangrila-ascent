@@ -91,8 +91,9 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
           <div aria-hidden className="absolute top-6 right-6 h-3 w-3 border-t border-r border-white/30" />
           <div aria-hidden className="absolute bottom-6 left-6 h-3 w-3 border-b border-l border-white/30" />
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 glass rounded-full px-4 py-1.5 text-xs text-muted-foreground backdrop-blur-xl pointer-events-none">
-            Drag to rotate · 360°
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 glass rounded-full px-4 py-1.5 text-xs text-muted-foreground backdrop-blur-xl pointer-events-none inline-flex items-center gap-2 shadow-[0_8px_30px_-10px_hsl(var(--accent-glow)/0.5)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--accent-glow))] animate-pulse" />
+            Drag to rotate • Scroll to zoom
           </div>
           <div className="absolute top-4 left-4 glass rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-accent backdrop-blur-xl pointer-events-none">
             ◉ Live 3D

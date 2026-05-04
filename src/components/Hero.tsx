@@ -61,6 +61,9 @@ export const Hero = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
           style={{ rotateY: rotY, rotateX: rotX, transformStyle: "preserve-3d" }}
           className="absolute inset-0 m-auto h-full w-full object-contain drop-shadow-[0_40px_80px_hsl(var(--accent-glow)/0.45)]"
         />
+        {/* Subtle gradient overlay for text contrast on hero image */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
       </motion.div>
 
       <motion.div
@@ -69,10 +72,10 @@ export const Hero = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
         transition={{ delay: 0.4, duration: 0.7 }}
         className="mt-10 flex items-center gap-3"
       >
-        <button className="elastic px-7 py-3 rounded-full bg-foreground text-background text-sm font-medium">
+        <button className="elastic px-7 py-3 rounded-full bg-foreground text-background text-sm font-medium transition-all hover:shadow-[0_0_40px_hsl(var(--accent-glow)/0.6)] hover:scale-[1.04] active:scale-[0.98]">
           Buy from Rs 1,49,900
         </button>
-        <button onClick={onOpenSpec} className="elastic glass-strong px-7 py-3 rounded-full text-sm font-medium">
+        <button onClick={onOpenSpec} className="elastic glass-strong px-7 py-3 rounded-full text-sm font-medium transition-all hover:bg-foreground/5 hover:scale-[1.04] hover:border-foreground/30 active:scale-[0.98]">
           Learn more
         </button>
       </motion.div>

@@ -26,23 +26,31 @@ export const LocalLogistics = () => {
 
         <div className="grid md:grid-cols-2 gap-4">
           <div className="grid grid-cols-2 gap-3">
-            {hubs.map((h, i) => (
-              <motion.button
-                key={h.city}
-                onClick={() => setActive(i)}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -3 }}
-                className={`glass rounded-2xl p-5 text-left transition-all ${active === i ? "ring-2 ring-accent" : ""}`}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{h.code}</span>
-                  <MapPin className="h-3.5 w-3.5 text-accent" />
-                </div>
-                <div className="font-display text-xl font-bold mt-3">{h.city}</div>
-                <div className="text-xs text-muted-foreground mt-1">{h.note}</div>
-              </motion.button>
-            ))}
+            {hubs.map((h, i) => {
+              const sameDay = h.eta === "Same day";
+              return (
+                <motion.button
+                  key={h.city}
+                  onClick={() => setActive(i)}
+                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+                  whileHover={{ y: -4 }}
+                  className={`relative glass rounded-2xl p-5 text-left transition-all hover:shadow-[0_20px_60px_-20px_hsl(var(--accent-glow)/0.4)] ${active === i ? "ring-2 ring-accent" : ""} ${sameDay ? "border border-emerald-400/30" : ""}`}
+                >
+                  {sameDay && (
+                    <span className="absolute -top-2 -right-2 px-2 py-0.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-emerald-500/40 animate-pulse">
+                      Same day
+                    </span>
+                  )}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{h.code}</span>
+                    <MapPin className={`h-3.5 w-3.5 ${sameDay ? "text-emerald-400" : "text-accent"}`} />
+                  </div>
+                  <div className="font-display text-xl font-bold mt-3">{h.city}</div>
+                  <div className="text-xs text-muted-foreground mt-1">{h.note}</div>
+                </motion.button>
+              );
+            })}
           </div>
 
           <motion.div
