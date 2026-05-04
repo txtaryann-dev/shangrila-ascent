@@ -447,3 +447,42 @@ const Row = ({ label, value, accent }: { label: string; value: string; accent?: 
     <span className={`text-sm tabular-nums ${accent ? "text-[hsl(var(--accent-glow))]" : ""}`}>{value}</span>
   </div>
 );
+
+interface ToolbarAction { label: string; icon: React.ReactNode; onClick: () => void; }
+const ToolbarMenu = ({ label, actions }: { label: string; actions: ToolbarAction[] }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(o => !o)}
+        onBlur={() => setTimeout(() => setOpen(false), 120)}
+        className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs hover:scale-[1.04] transition-transform"
+      >
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</span>
+        <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.18 }}
+            className="absolute left-0 top-full mt-2 z-30 min-w-[200px] glass-strong squircle p-1.5"
+          >
+            {actions.map(a => (
+              <button
+                key={a.label}
+                onMouseDown={(e) => { e.preventDefault(); a.onClick(); setOpen(false); }}
+                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs hover:bg-foreground/5 transition text-left"
+              >
+                {a.icon}
+                <span>{a.label}</span>
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
