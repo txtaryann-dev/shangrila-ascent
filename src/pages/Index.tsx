@@ -28,6 +28,7 @@ const chapters = [
   { id: "ch-laptops", label: "Laptops" },
   { id: "ch-audio", label: "Audio" },
   { id: "ch-wearables", label: "Wearables" },
+  { id: "ch-cameras", label: "Cameras" },
   { id: "ch-wholesale", label: "Wholesale" },
   { id: "ch-worldwide", label: "Worldwide" },
 ];
@@ -131,6 +132,27 @@ const Index = () => {
               addOns={[
                 { name: "Sport Loop", priceNPR: 4800 },
                 { name: "Milanese Band", priceNPR: 8900 },
+              ]}
+            />
+
+            <ProductChapter
+              id="ch-cameras"
+              index="05"
+              category="Cameras"
+              tagline="Lumen R1"
+              title="Frame the Himalayas."
+              body="A full-frame mirrorless engineered with Nepali landscape photographers in mind. 8K cinema, 12-stop dynamic range, and weather-sealed magnesium body that handles base-camp conditions."
+              image={watch}
+              basePriceNPR={189000}
+              bullets={[
+                "45MP full-frame BSI · 8K30 / 4K120",
+                "Dual processor · 8-stop IBIS",
+                "Weather sealed · operates to −10°C",
+              ]}
+              addOns={[
+                { name: "24-70mm f/2.8 lens", priceNPR: 78000 },
+                { name: "Carbon tripod", priceNPR: 14500 },
+                { name: "Extra battery pack", priceNPR: 5200 },
               ]}
             />
 
