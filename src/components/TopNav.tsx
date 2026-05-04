@@ -57,9 +57,13 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
           </button>
         </div>
 
-        <nav className="hidden md:flex items-center gap-6 text-[13px] text-muted-foreground">
-          {navLinks.map(l => (
-            <a key={l.label} href={l.href} className="relative hover:text-foreground transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:scale-x-0 after:origin-left after:bg-foreground after:transition-transform hover:after:scale-x-100">
+        <nav className="hidden md:flex items-center gap-5 lg:gap-6 text-[13px] text-muted-foreground">
+          {navLinks.map((l, i) => (
+            <a
+              key={l.label}
+              href={l.href}
+              className={`relative transition-colors hover:text-foreground after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:scale-x-0 after:origin-left after:bg-foreground after:transition-transform hover:after:scale-x-100 ${i >= 5 ? "hidden lg:inline" : ""}`}
+            >
               {l.label}
             </a>
           ))}
