@@ -268,10 +268,10 @@ export const Wholesale = ({ onOpenBag }: { onOpenBag?: () => void }) => {
           </div>
         </div>
 
-        {/* Tier ladder */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-10">
+        {/* Tier ladder — stack on mobile */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-10">
           {TIERS.map(t => (
-            <div key={t.label} className="glass squircle p-4">
+            <div key={t.label} className="glass squircle p-4 transition-all hover:-translate-y-1 hover:shadow-[0_20px_60px_-20px_hsl(var(--accent-glow)/0.35)]">
               <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{t.label}</div>
               <div className="text-lg font-semibold mt-1">
                 {t.max === Infinity ? `${t.min}+ units` : `${t.min}–${t.max} units`}
@@ -283,44 +283,35 @@ export const Wholesale = ({ onOpenBag }: { onOpenBag?: () => void }) => {
           ))}
         </div>
 
-        {/* Toolbar */}
-        <div className="glass-strong squircle p-4 mb-6 flex flex-wrap items-center gap-2">
-          <span className="text-[11px] uppercase tracking-wider text-muted-foreground mr-2 px-2">Catalog</span>
-          <button onClick={() => onPickFile("catalog")} className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs">
-            <Upload className="h-3.5 w-3.5" /> Import
-          </button>
-          <button onClick={exportCatalogCSV} className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs">
-            <FileSpreadsheet className="h-3.5 w-3.5" /> Export CSV
-          </button>
-          <button onClick={exportCatalogJSON} className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs">
-            <FileJson className="h-3.5 w-3.5" /> Export JSON
-          </button>
+        {/* Toolbar — consolidated into grouped menus */}
+        <div className="glass-strong squircle p-3 mb-6 flex flex-wrap items-center gap-2">
+          <ToolbarMenu
+            label="Catalog"
+            actions={[
+              { label: "Import CSV / JSON", icon: <Upload className="h-3.5 w-3.5" />, onClick: () => onPickFile("catalog") },
+              { label: "Export as CSV", icon: <FileSpreadsheet className="h-3.5 w-3.5" />, onClick: exportCatalogCSV },
+              { label: "Export as JSON", icon: <FileJson className="h-3.5 w-3.5" />, onClick: exportCatalogJSON },
+            ]}
+          />
+          <ToolbarMenu
+            label="Quote"
+            actions={[
+              { label: "Import quantities", icon: <Upload className="h-3.5 w-3.5" />, onClick: () => onPickFile("quote") },
+              { label: "Export quote (CSV)", icon: <Download className="h-3.5 w-3.5" />, onClick: exportQuoteCSV },
+              { label: "Export quote (JSON)", icon: <Download className="h-3.5 w-3.5" />, onClick: exportQuoteJSON },
+            ]}
+          />
+          <ToolbarMenu
+            label="Cart"
+            actions={[
+              { label: "Import cart", icon: <Upload className="h-3.5 w-3.5" />, onClick: () => onPickFile("cart") },
+              { label: "Export cart", icon: <Download className="h-3.5 w-3.5" />, onClick: exportCartJSON },
+            ]}
+          />
 
-          <span className="mx-2 h-5 w-px bg-border" />
-
-          <span className="text-[11px] uppercase tracking-wider text-muted-foreground mr-2 px-2">Quote</span>
-          <button onClick={() => onPickFile("quote")} className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs">
-            <Upload className="h-3.5 w-3.5" /> Import quantities
-          </button>
-          <button onClick={exportQuoteCSV} className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs">
-            <Download className="h-3.5 w-3.5" /> Export quote (CSV)
-          </button>
-          <button onClick={exportQuoteJSON} className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs">
-            <Download className="h-3.5 w-3.5" /> Export quote (JSON)
-          </button>
-
-          <span className="mx-2 h-5 w-px bg-border" />
-
-          <span className="text-[11px] uppercase tracking-wider text-muted-foreground mr-2 px-2">Cart</span>
-          <button onClick={() => onPickFile("cart")} className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs">
-            <Upload className="h-3.5 w-3.5" /> Import cart
-          </button>
-          <button onClick={exportCartJSON} className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs">
-            <Download className="h-3.5 w-3.5" /> Export cart
-          </button>
           <button
             onClick={addAllToCart}
-            className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs text-[hsl(var(--accent-glow))] hover:text-foreground"
+            className="glass squircle elastic flex items-center gap-2 px-3 py-2 text-xs text-[hsl(var(--accent-glow))] hover:text-foreground hover:scale-[1.04] transition-transform"
           >
             <ShoppingBag className="h-3.5 w-3.5" /> Add all to cart
           </button>
