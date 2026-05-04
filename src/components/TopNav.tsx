@@ -114,6 +114,38 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
           </button>
         </div>
       </div>
+
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -8, filter: "blur(8px)" }}
+            transition={{ duration: 0.25 }}
+            className="mt-2 glass-strong squircle p-2 flex items-center gap-2"
+          >
+            <Search className="h-4 w-4 text-muted-foreground ml-2" />
+            <input
+              autoFocus
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search products, accessories, support…"
+              className="flex-1 bg-transparent outline-none text-sm py-2 placeholder:text-muted-foreground"
+            />
+            {query && (
+              <button onClick={() => setQuery("")} aria-label="Clear" className="p-1.5 rounded-full hover:bg-foreground/5">
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+            <button
+              onClick={() => setSearchOpen(false)}
+              className="elastic px-3 py-1.5 text-xs rounded-full bg-foreground text-background"
+            >
+              Search
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };
