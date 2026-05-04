@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Moon, Search, ShoppingBag, Sun, MapPin, ChevronDown } from "lucide-react";
+import { Moon, Search, ShoppingBag, Sun, MapPin, ChevronDown, X } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "./ThemeProvider";
 import { CurrencyToggle } from "./CurrencyToggle";
@@ -21,6 +21,18 @@ const dot = (s: string) =>
 export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
   const { theme, toggle } = useTheme();
   const [navOpen, setNavOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const navLinks: { label: string; href: string }[] = [
+    { label: "Phones", href: "#ch-phones" },
+    { label: "Laptops", href: "#ch-laptops" },
+    { label: "Audio", href: "#ch-audio" },
+    { label: "Wearables", href: "#ch-wearables" },
+    { label: "Cameras", href: "#ch-cameras" },
+    { label: "Accessories", href: "#shop" },
+    { label: "Support", href: "#delivery" },
+  ];
 
   return (
     <motion.header
@@ -45,9 +57,11 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
           </button>
         </div>
 
-        <nav className="hidden md:flex items-center gap-7 text-[13px] text-muted-foreground">
-          {["Phones", "Laptops", "Audio", "Wearables", "Accessories", "Support"].map(l => (
-            <a key={l} href="#" className="hover:text-foreground transition-colors">{l}</a>
+        <nav className="hidden md:flex items-center gap-6 text-[13px] text-muted-foreground">
+          {navLinks.map(l => (
+            <a key={l.label} href={l.href} className="relative hover:text-foreground transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:scale-x-0 after:origin-left after:bg-foreground after:transition-transform hover:after:scale-x-100">
+              {l.label}
+            </a>
           ))}
         </nav>
 
@@ -87,8 +101,14 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
           </div>
 
           <div className="hidden sm:block mr-1"><CurrencyToggle /></div>
-          <button aria-label="Search" className="p-2 rounded-full hover:bg-foreground/5 transition"><Search className="h-4 w-4" /></button>
-          <button aria-label="Bag" onClick={onOpenBag} className="p-2 rounded-full hover:bg-foreground/5 transition relative">
+          <button
+            aria-label="Search"
+            onClick={() => setSearchOpen(o => !o)}
+            className="p-2 rounded-full hover:bg-foreground/5 hover:scale-110 active:scale-95 transition"
+          >
+            <Search className="h-4 w-4" />
+          </button>
+          <button aria-label="Bag" onClick={onOpenBag} className="p-2 rounded-full hover:bg-foreground/5 hover:scale-110 active:scale-95 transition relative">
             <ShoppingBag className="h-4 w-4" />
             <span className="absolute -top-0.5 -right-0.5 h-4 w-4 grid place-items-center rounded-full bg-[hsl(var(--accent-glow))] text-[10px] font-semibold text-white">2</span>
           </button>
