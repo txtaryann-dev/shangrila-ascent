@@ -216,14 +216,14 @@ export const ProductChapter = ({
               <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Shipping calculator</span>
               <span className="text-[11px] text-muted-foreground">Live rates</span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
               {SHIPPING_OPTIONS.map((s, i) => {
                 const on = i === shipIdx;
                 return (
                   <button
                     key={s.code}
                     onClick={() => setShipIdx(i)}
-                    className={`relative text-left rounded-2xl px-3 py-2.5 border transition-all ${
+                    className={`relative text-left rounded-xl px-4 py-3 border transition-all w-full ${
                       on
                         ? "border-accent/70 bg-accent/10 shadow-[0_0_20px_hsl(var(--accent-glow)/0.3)]"
                         : "border-white/10 hover:border-white/30"
