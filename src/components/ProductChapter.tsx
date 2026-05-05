@@ -280,14 +280,14 @@ export const ProductChapter = ({
             </div>
           )}
 
-          {/* Reviews summary */}
-          <div className="mt-8 glass rounded-3xl p-5">
+          {/* Reviews summary — consistent rounded-xl + p-4/5 */}
+          <div className="mt-10 rounded-xl border border-white/10 bg-white/[0.02] p-4 md:p-5">
             <div className="flex items-center justify-between mb-3">
               <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Customer reviews</p>
               <a href="#" className="text-xs text-[hsl(var(--accent-glow))] hover:underline">See all {rating.count}</a>
             </div>
             <div className="flex items-center gap-4 mb-4">
-              <div className="font-display text-4xl font-bold">{rating.score.toFixed(1)}</div>
+              <div className="font-display text-4xl font-bold leading-none">{rating.score.toFixed(1)}</div>
               <div>
                 <div className="flex">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -311,19 +311,19 @@ export const ProductChapter = ({
                       ))}
                     </span>
                   </div>
-                  <p className="text-sm text-muted-foreground">{r.text}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{r.text}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* CTA */}
-          <div className="mt-8 flex gap-3 flex-wrap">
-            <button className="elastic px-6 py-3 rounded-full bg-foreground text-background text-sm font-medium inline-flex items-center gap-2
+          {/* CTA — vertically aligned, full-width on mobile */}
+          <div className="mt-8 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+            <button className="elastic h-12 px-6 rounded-full bg-foreground text-background text-sm font-medium inline-flex items-center justify-center gap-2
               hover:shadow-[0_0_40px_hsl(var(--accent-glow)/0.6)] hover:scale-[1.04] active:scale-[0.98] transition-all">
               Buy Now <ArrowRight className="h-4 w-4" />
             </button>
-            <button className="elastic glass px-6 py-3 rounded-full text-sm hover:bg-foreground/5 hover:scale-[1.04] active:scale-[0.98] transition-all">Learn more</button>
+            <button className="elastic h-12 px-6 rounded-full glass text-sm inline-flex items-center justify-center hover:bg-foreground/5 hover:scale-[1.04] active:scale-[0.98] transition-all">Learn more</button>
           </div>
         </motion.div>
       </div>
