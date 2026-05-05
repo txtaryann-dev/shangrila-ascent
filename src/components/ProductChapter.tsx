@@ -156,40 +156,49 @@ export const ProductChapter = ({
 
           {/* Pricing */}
           <div className="mt-8">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Starting at</p>
-            <motion.p
-              key={total}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="font-display text-4xl md:text-5xl font-bold mt-1"
-            >
-              {format(total)}
-            </motion.p>
-            <p className="text-[11px] text-muted-foreground mt-1">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Starting at</p>
+                <motion.p
+                  key={total}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  className="font-display text-4xl md:text-5xl font-bold mt-1 leading-none"
+                >
+                  {format(total)}
+                </motion.p>
+              </div>
+              {/* In Stock badge — anchored to top-right of price row */}
+              <span className="inline-flex items-center gap-1.5 glass rounded-full px-3 py-1.5 text-[11px] shrink-0 mt-1">
+                <span className={`h-2 w-2 rounded-full ${stockLabel.dot}`} />
+                {stockLabel.text}
+              </span>
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-2">
               Inclusive of all taxes · {format(productSubtotal)} product + {format(shipCost)} shipping to {SHIPPING_OPTIONS[shipIdx].city}
             </p>
 
-            {/* Trust badges */}
-            <div className="mt-3 flex flex-wrap gap-2">
-              <span className="inline-flex items-center gap-1.5 text-[11px] glass rounded-full px-2.5 py-1">
-                <Shield className="h-3 w-3 text-emerald-400" /> 2-yr warranty
+            {/* Trust badges — consistent icon size & gap */}
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-3 text-xs glass rounded-lg px-3 py-2">
+                <Shield className="h-5 w-5 text-emerald-400 shrink-0" /> 2-yr warranty
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[11px] glass rounded-full px-2.5 py-1">
-                <BadgeCheck className="h-3 w-3 text-[hsl(var(--accent-glow))]" /> Authenticity guaranteed
+              <span className="inline-flex items-center gap-3 text-xs glass rounded-lg px-3 py-2">
+                <BadgeCheck className="h-5 w-5 text-[hsl(var(--accent-glow))] shrink-0" /> Authenticity guaranteed
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[11px] glass rounded-full px-2.5 py-1">
-                <Truck className="h-3 w-3 text-[hsl(var(--accent-glow-2))]" /> Free returns · 14 days
+              <span className="inline-flex items-center gap-3 text-xs glass rounded-lg px-3 py-2">
+                <Truck className="h-5 w-5 text-[hsl(var(--accent-glow-2))] shrink-0" /> Free returns · 14 days
               </span>
             </div>
 
-            {/* EMI — larger, more discoverable */}
+            {/* EMI — 40px (mt-10) below warranty badges row */}
             <button
               onClick={() => setEmiOpen(true)}
-              className="mt-5 w-full sm:w-auto inline-flex items-center justify-between gap-4 px-5 py-4 rounded-2xl border border-accent/30 bg-gradient-to-r from-[hsl(var(--accent-glow)/0.10)] to-[hsl(var(--accent-glow-2)/0.10)] hover:border-accent/60 hover:shadow-[0_0_30px_hsl(var(--accent-glow)/0.35)] transition-all group"
+              className="mt-10 w-full inline-flex items-center justify-between gap-4 px-5 py-4 rounded-xl border border-accent/30 bg-gradient-to-r from-[hsl(var(--accent-glow)/0.10)] to-[hsl(var(--accent-glow-2)/0.10)] hover:border-accent/60 hover:shadow-[0_0_30px_hsl(var(--accent-glow)/0.35)] transition-all group"
             >
               <span className="flex items-center gap-3">
-                <span className="h-9 w-9 grid place-items-center rounded-xl bg-foreground text-background">
+                <span className="h-9 w-9 grid place-items-center rounded-lg bg-foreground text-background shrink-0">
                   <Calculator className="h-4 w-4" />
                 </span>
                 <span className="text-left">
@@ -197,12 +206,12 @@ export const ProductChapter = ({
                   <span className="block text-[11px] text-muted-foreground">From {format(Math.round(total / 12))} / mo · 0% interest available</span>
                 </span>
               </span>
-              <ArrowRight className="h-4 w-4 opacity-60 group-hover:translate-x-1 group-hover:opacity-100 transition" />
+              <ArrowRight className="h-4 w-4 opacity-60 group-hover:translate-x-1 group-hover:opacity-100 transition shrink-0" />
             </button>
           </div>
 
-          {/* Real-time shipping calculator */}
-          <div className="mt-6 glass-strong rounded-3xl p-5">
+          {/* Real-time shipping calculator — 1 col mobile / 2 tablet / 4 desktop, consistent 20px padding */}
+          <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.02] p-4 md:p-5">
             <div className="flex items-center justify-between mb-3">
               <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Shipping calculator</span>
               <span className="text-[11px] text-muted-foreground">Live rates</span>
