@@ -101,11 +101,8 @@ export const ProductChapter = ({
           <div aria-hidden className="absolute top-4 left-4 glass rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-accent">
             ◉ {category}
           </div>
-          <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 glass rounded-full px-3 py-1 text-[10px] text-white/85">
-            <span className={`h-1.5 w-1.5 rounded-full ${stockLabel.dot}`} />
-            {stockLabel.text}
-          </div>
         </motion.div>
+        {/* (Stock indicator moved next to price for better alignment) */}
 
         {/* Specs / pricing */}
         <motion.div
