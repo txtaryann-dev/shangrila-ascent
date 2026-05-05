@@ -260,13 +260,13 @@ export const ProductChapter = ({
                     <button
                       key={a.name}
                       onClick={() => toggle(i)}
-                      className={`group flex items-center gap-3 p-3 rounded-2xl border text-left transition-all ${
+                      className={`group flex items-center gap-3 p-4 rounded-xl border text-left transition-all ${
                         on
                           ? "border-accent/60 bg-accent/10 shadow-[0_0_20px_hsl(var(--accent-glow)/0.3)]"
                           : "border-white/10 hover:border-white/30 hover:-translate-y-0.5"
                       }`}
                     >
-                      <span className={`h-14 w-14 shrink-0 rounded-xl grid place-items-center bg-gradient-to-br from-foreground/10 to-foreground/5 border ${on ? "border-accent/40" : "border-white/10"}`}>
+                      <span className={`h-14 w-14 shrink-0 rounded-lg grid place-items-center bg-gradient-to-br from-foreground/10 to-foreground/5 border ${on ? "border-accent/40" : "border-white/10"}`}>
                         {on ? <Check className="h-5 w-5 text-[hsl(var(--accent-glow))]" /> : <Plus className="h-5 w-5 text-muted-foreground" />}
                       </span>
                       <span className="min-w-0 flex-1">
