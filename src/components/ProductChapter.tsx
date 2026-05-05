@@ -68,9 +68,9 @@ export const ProductChapter = ({
   };
 
   return (
-    <section ref={ref} id={id} className="relative py-28 md:py-32 flex items-center scroll-mt-24">
+    <section ref={ref} id={id} className="relative mt-20 scroll-mt-24">
       {/* Sticky chapter header */}
-      <div className="absolute top-24 left-0 right-0 z-10 pointer-events-none">
+      <div className="absolute top-0 left-0 right-0 z-10 pointer-events-none">
         <div className="container">
           <div className="sticky top-28 inline-flex items-center gap-3 glass rounded-full px-4 py-1.5 backdrop-blur-xl pointer-events-auto">
             <span className="font-display text-sm font-semibold text-accent">{index}</span>
@@ -80,11 +80,11 @@ export const ProductChapter = ({
         </div>
       </div>
 
-      <div className="container grid lg:grid-cols-2 gap-12 items-center pt-12">
-        {/* Sticky product image */}
+      <div className="container grid lg:grid-cols-[40%_60%] gap-8 lg:gap-[60px] items-start pt-16">
+        {/* Sticky product image — desktop sticky, mobile inline */}
         <motion.div
           style={{ scale: imgScale, y: imgY }}
-          className="relative aspect-square rounded-[2.5rem] overflow-hidden
+          className="relative w-full max-w-[500px] mx-auto lg:mx-0 lg:min-w-[400px] aspect-square lg:sticky lg:top-20 rounded-[2rem] overflow-hidden
             bg-[radial-gradient(ellipse_at_50%_30%,hsl(var(--accent-glow)/0.18),transparent_60%),radial-gradient(ellipse_at_70%_80%,hsl(280_90%_60%/0.14),transparent_55%),linear-gradient(180deg,hsl(0_0%_6%),hsl(0_0%_2%))]
             border border-white/10 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8)]"
         >
