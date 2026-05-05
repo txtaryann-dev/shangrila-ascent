@@ -125,8 +125,8 @@ export const ProductChapter = ({
             <span className="text-foreground/80">{tagline}</span>
           </nav>
 
-          <p className="text-sm text-accent font-medium tracking-wider uppercase">{tagline}</p>
-          <h2 className="font-display text-4xl md:text-6xl font-bold tracking-tight mt-2 leading-[1]">
+          <p className="text-sm text-accent font-medium tracking-wider uppercase mt-5 lg:mt-0">{tagline}</p>
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mt-2 leading-[1.05]">
             {title}
           </h2>
 
