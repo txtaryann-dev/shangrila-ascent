@@ -178,6 +178,10 @@
 @layer utilities {
   .scrollbar-none::-webkit-scrollbar { display: none; }
   .scrollbar-none { scrollbar-width: none; }
+
+  /* Theme-aware product image blending — simulates transparency on baked-in backgrounds */
+  .product-img-blend { mix-blend-mode: multiply; }
+  .dark .product-img-blend { mix-blend-mode: screen; }
   .blur-in { animation: blurIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
   @keyframes blurIn {
     0% { opacity: 0; filter: blur(20px); transform: scale(0.96); }
