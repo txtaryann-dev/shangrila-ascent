@@ -52,22 +52,22 @@ const Card = ({ t, i, onCompare, added }: { t: T; i: number; onCompare: (title: 
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.8, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -6 }}
-      className={`glow-card group relative overflow-hidden squircle rounded-3xl glass min-h-[260px] transition-shadow duration-500 hover:shadow-[0_30px_80px_-20px_hsl(var(--accent-glow)/0.45)] ${t.className}`}
+      className={`glow-card group relative overflow-hidden squircle rounded-3xl glass min-h-[260px] transition-shadow duration-500 hover:shadow-[0_20px_50px_-20px_hsl(var(--foreground)/0.25)] dark:hover:shadow-[0_30px_80px_-20px_hsl(var(--accent-glow)/0.45)] ${t.className}`}
     >
       <img
         src={t.img} alt={t.title} loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-[1.06]"
+        className="product-img-blend absolute inset-0 h-full w-full object-cover opacity-95 transition-transform duration-700 group-hover:scale-[1.06]"
       />
-      {/* Stronger gradient overlay for text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/10" />
+      {/* Theme-aware gradient overlay for text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-t from-white/85 via-white/40 to-white/5 dark:from-black dark:via-black/55 dark:to-black/10" />
       <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[hsl(var(--accent-glow)/0.18)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="absolute inset-0 p-6 flex flex-col justify-between text-white">
+      <div className="absolute inset-0 p-6 flex flex-col justify-between text-neutral-900 dark:text-white">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[10px] uppercase tracking-[0.18em] text-white/70 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur">
+            <span className="text-[10px] uppercase tracking-[0.18em] text-neutral-700 dark:text-white/70 px-2.5 py-1 rounded-full bg-black/5 dark:bg-white/10 backdrop-blur">
               {t.tag}
             </span>
-            <span className="inline-flex items-center gap-1.5 text-[10px] px-2 py-1 rounded-full bg-white/10 backdrop-blur text-white/85">
+            <span className="inline-flex items-center gap-1.5 text-[10px] px-2 py-1 rounded-full bg-black/5 dark:bg-white/10 backdrop-blur text-neutral-800 dark:text-white/85">
               <span className={`h-1.5 w-1.5 rounded-full ${sb.dot}`} />
               {sb.text}
             </span>
@@ -76,19 +76,19 @@ const Card = ({ t, i, onCompare, added }: { t: T; i: number; onCompare: (title: 
         </div>
         <div>
           <h3 className="font-display text-2xl md:text-3xl font-bold leading-tight">{t.title}</h3>
-          <div className="mt-1 flex items-center gap-3 text-[10px] text-white/60">
+          <div className="mt-1 flex items-center gap-3 text-[10px] text-neutral-700 dark:text-white/60">
             <span className="font-mono">{t.sku}</span>
             <span className="inline-flex items-center gap-1"><Truck className="h-3 w-3" /> {t.eta}</span>
           </div>
           <div className="mt-2 flex items-center justify-between gap-3">
-            <p className="text-sm text-white/80">{t.price}</p>
+            <p className="text-sm text-neutral-800 dark:text-white/80">{t.price}</p>
             <button
               onClick={(e) => { e.stopPropagation(); onCompare(t.title); }}
               aria-pressed={added}
               className={`elastic rounded-full text-[10px] px-2.5 py-1 inline-flex items-center gap-1 transition-colors ${
                 added
                   ? "bg-emerald-500/90 text-white shadow-[0_0_18px_rgb(52_211_153/.6)]"
-                  : "glass text-white hover:bg-white/20"
+                  : "glass text-neutral-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/20"
               }`}
             >
               {added ? <><Check className="h-3 w-3" /> Added</> : <><Plus className="h-3 w-3" /> Compare</>}
