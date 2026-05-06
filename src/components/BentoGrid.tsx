@@ -52,14 +52,16 @@ const Card = ({ t, i, onCompare, added }: { t: T; i: number; onCompare: (title: 
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.8, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -6 }}
-      className={`glow-card group relative overflow-hidden squircle rounded-3xl glass min-h-[260px] transition-shadow duration-500 hover:shadow-[0_20px_50px_-20px_hsl(var(--foreground)/0.25)] dark:hover:shadow-[0_30px_80px_-20px_hsl(var(--accent-glow)/0.45)] ${t.className}`}
+      className={`glow-card group relative overflow-hidden squircle rounded-3xl bg-transparent border border-neutral-200 shadow-sm dark:border-white/10 dark:shadow-none min-h-[260px] transition-all duration-500 hover:shadow-md dark:hover:shadow-[0_30px_80px_-20px_hsl(var(--accent-glow)/0.45)] ${t.className}`}
     >
+      {/* Studio backdrop — light gray in light mode, deep void in dark mode */}
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,#f3f3f3_0%,#e8e8e8_70%,transparent_100%)] dark:bg-[radial-gradient(circle_at_50%_40%,hsl(0_0%_8%)_0%,hsl(0_0%_2%)_70%,transparent_100%)]" />
       <img
         src={t.img} alt={t.title} loading="lazy"
-        className="product-img-blend absolute inset-0 h-full w-full object-cover opacity-95 transition-transform duration-700 group-hover:scale-[1.06]"
+        className="product-img-blend absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
       />
       {/* Theme-aware gradient overlay for text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-t from-white/85 via-white/40 to-white/5 dark:from-black dark:via-black/55 dark:to-black/10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/40 to-transparent dark:from-black dark:via-black/55 dark:to-black/10" />
       <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[hsl(var(--accent-glow)/0.18)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       <div className="absolute inset-0 p-6 flex flex-col justify-between text-neutral-900 dark:text-white">
         <div className="flex items-start justify-between gap-2">

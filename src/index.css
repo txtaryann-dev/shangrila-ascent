@@ -119,6 +119,7 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
     font-feature-settings: 'cv11', 'ss01', 'ss03';
     letter-spacing: -0.011em;
+    transition: background-color 500ms ease, color 500ms ease;
   }
   h1, h2, h3, h4 {
     font-family: 'Inter', -apple-system, 'SF Pro Display', sans-serif;
@@ -135,6 +136,7 @@
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
     border: 1px solid hsl(var(--glass-border) / var(--glass-border-opacity));
     box-shadow: var(--glass-shadow);
+    transition: background-color 500ms ease, border-color 500ms ease, box-shadow 500ms ease, backdrop-filter 500ms ease;
   }
   .glass-strong {
     background-color: hsl(var(--glass-bg) / 0.08);
@@ -142,6 +144,7 @@
     -webkit-backdrop-filter: blur(40px) saturate(200%);
     border: 1px solid hsl(var(--glass-border) / 0.14);
     box-shadow: 0 40px 100px -30px hsl(0 0% 0% / 0.8), inset 0 1px 0 0 hsl(0 0% 100% / 0.06);
+    transition: background-color 500ms ease, border-color 500ms ease, box-shadow 500ms ease, backdrop-filter 500ms ease;
   }
   .text-gradient {
     background: linear-gradient(135deg, hsl(var(--foreground)), hsl(var(--accent-glow)));
@@ -179,9 +182,9 @@
   .scrollbar-none::-webkit-scrollbar { display: none; }
   .scrollbar-none { scrollbar-width: none; }
 
-  /* Theme-aware product image blending — simulates transparency on baked-in backgrounds */
+  /* Theme-aware product image blending — digitally removes baked-in white/black backgrounds */
   .product-img-blend { mix-blend-mode: multiply; }
-  .dark .product-img-blend { mix-blend-mode: screen; }
+  .dark .product-img-blend { mix-blend-mode: lighten; }
   .blur-in { animation: blurIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
   @keyframes blurIn {
     0% { opacity: 0; filter: blur(20px); transform: scale(0.96); }
