@@ -119,6 +119,7 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
     font-feature-settings: 'cv11', 'ss01', 'ss03';
     letter-spacing: -0.011em;
+    transition: background-color 500ms ease, color 500ms ease;
   }
   h1, h2, h3, h4 {
     font-family: 'Inter', -apple-system, 'SF Pro Display', sans-serif;
