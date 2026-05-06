@@ -89,7 +89,6 @@ export const ProductChapter = ({
             dark:bg-[radial-gradient(ellipse_at_50%_30%,hsl(var(--accent-glow)/0.18),transparent_60%),radial-gradient(ellipse_at_70%_80%,hsl(280_90%_60%/0.14),transparent_55%),linear-gradient(180deg,hsl(0_0%_6%),hsl(0_0%_2%))]
             border border-neutral-200 dark:border-white/10 shadow-sm dark:shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8)]"
         >
-        >
           <div aria-hidden className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-accent/20 blur-3xl" />
           <div aria-hidden className="absolute -bottom-20 -right-16 h-72 w-72 rounded-full bg-[hsl(280_90%_60%/0.15)] blur-3xl" />
           <img
