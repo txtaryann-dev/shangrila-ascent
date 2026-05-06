@@ -85,8 +85,9 @@ export const ProductChapter = ({
         <motion.div
           style={{ scale: imgScale, y: imgY }}
           className="relative w-full max-w-[500px] mx-auto lg:mx-0 lg:min-w-[400px] aspect-square lg:sticky lg:top-20 rounded-[2rem] overflow-hidden
-            bg-[radial-gradient(ellipse_at_50%_30%,hsl(var(--accent-glow)/0.18),transparent_60%),radial-gradient(ellipse_at_70%_80%,hsl(280_90%_60%/0.14),transparent_55%),linear-gradient(180deg,hsl(0_0%_6%),hsl(0_0%_2%))]
-            border border-white/10 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8)]"
+            bg-[radial-gradient(ellipse_at_50%_30%,hsl(var(--accent-glow)/0.10),transparent_60%),radial-gradient(ellipse_at_70%_80%,hsl(280_90%_60%/0.08),transparent_55%),linear-gradient(180deg,hsl(0_0%_98%),hsl(0_0%_94%))]
+            dark:bg-[radial-gradient(ellipse_at_50%_30%,hsl(var(--accent-glow)/0.18),transparent_60%),radial-gradient(ellipse_at_70%_80%,hsl(280_90%_60%/0.14),transparent_55%),linear-gradient(180deg,hsl(0_0%_6%),hsl(0_0%_2%))]
+            border border-black/10 dark:border-white/10 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.2)] dark:shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8)]"
         >
           <div aria-hidden className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-accent/20 blur-3xl" />
           <div aria-hidden className="absolute -bottom-20 -right-16 h-72 w-72 rounded-full bg-[hsl(280_90%_60%/0.15)] blur-3xl" />
@@ -96,7 +97,7 @@ export const ProductChapter = ({
             loading="lazy"
             width={1024}
             height={1024}
-            className="absolute inset-0 h-full w-full object-cover"
+            className="product-img-blend absolute inset-0 h-full w-full object-cover"
           />
           <div aria-hidden className="absolute top-4 left-4 glass rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-accent">
             ◉ {category}
