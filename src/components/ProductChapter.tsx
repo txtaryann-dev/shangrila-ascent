@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useMemo, useRef, useState } from "react";
 import { ArrowRight, Calculator, Check, ChevronRight, Shield, BadgeCheck, Star, Truck, Plus } from "lucide-react";
 import { useCurrency } from "./CurrencyProvider";
@@ -43,9 +43,11 @@ export const ProductChapter = ({
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [shipIdx, setShipIdx] = useState(0);
 
+  const shouldReduce = useReducedMotion();
+
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.95]);
-  const imgY = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], shouldReduce ? [1, 1, 1] : [0.9, 1, 0.95]);
+  const imgY = useTransform(scrollYProgress, [0, 1], shouldReduce ? [0, 0] : [60, -60]);
 
   const productSubtotal = basePriceNPR + Array.from(selected).reduce((s, i) => s + addOns[i].priceNPR, 0);
   const shipCost = SHIPPING_OPTIONS[shipIdx].costNPR;
@@ -107,10 +109,10 @@ export const ProductChapter = ({
 
         {/* Specs / pricing */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={shouldReduce ? false : { opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-20%" }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          transition={shouldReduce ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 30 }}
         >
           {/* Breadcrumbs */}
           <nav aria-label="Breadcrumb" className="mb-3 flex items-center gap-1.5 text-[11px] text-muted-foreground">
@@ -159,9 +161,9 @@ export const ProductChapter = ({
                 <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Starting at</p>
                 <motion.p
                   key={total}
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={shouldReduce ? false : { opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  transition={shouldReduce ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 30 }}
                   className="font-display text-4xl md:text-5xl font-bold mt-1 leading-none"
                 >
                   {format(total)}
