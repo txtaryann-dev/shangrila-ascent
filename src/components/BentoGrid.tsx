@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Plus, Check, Truck, Camera as CameraIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import phone from "@/assets/obsidian-phone.jpg";
