@@ -1,8 +1,9 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { MessageCircle, Send, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 
 export const ChatAssistant = () => {
+  const shouldReduce = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<{ role: "user" | "ai"; text: string }[]>([
     { role: "ai", text: "Namaste! I'm Sherpa, your AI shopping assistant. How can I help today?" },
@@ -19,8 +20,8 @@ export const ChatAssistant = () => {
   return (
     <>
       <motion.button
-        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1, type: "spring" }}
-        whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.95 }}
+        initial={shouldReduce ? false : { scale: 0 }} animate={{ scale: 1 }} transition={shouldReduce ? { duration: 0 } : { delay: 1, type: "spring" }}
+        whileHover={shouldReduce ? undefined : { scale: 1.06 }} whileTap={shouldReduce ? undefined : { scale: 0.95 }}
         onClick={() => setOpen(o => !o)}
         aria-label="Chat with Support"
         title="Chat with Support"
@@ -34,10 +35,10 @@ export const ChatAssistant = () => {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.96 }}
+            initial={shouldReduce ? false : { opacity: 0, y: 20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.96 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            exit={shouldReduce ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.96 }}
+            transition={shouldReduce ? { duration: 0 } : { duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="fixed bottom-44 md:bottom-24 right-6 z-50 w-[calc(100vw-3rem)] sm:w-[380px] glass-strong rounded-3xl flex flex-col overflow-hidden h-[480px]"
           >
             <div className="p-4 border-b border-border/50 flex items-center gap-3">
@@ -53,7 +54,7 @@ export const ChatAssistant = () => {
               {msgs.map((m, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                  initial={shouldReduce ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                   className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm ${m.role === "ai" ? "glass" : "ml-auto bg-foreground text-background"}`}
                 >
                   {m.text}

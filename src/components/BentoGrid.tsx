@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Plus, Check, Truck, Camera as CameraIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import phone from "@/assets/obsidian-phone.jpg";
@@ -43,15 +43,16 @@ const Card = ({ t, i, onCompare, added }: { t: T; i: number; onCompare: (title: 
     ref.current!.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
   };
   const sb = stockBadge(t.stock);
+  const shouldReduce = useReducedMotion();
   return (
     <motion.div
       ref={ref}
       onMouseMove={move}
-      initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+      initial={shouldReduce ? false : { opacity: 0, y: 30, filter: "blur(10px)" }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -6 }}
+      transition={shouldReduce ? { duration: 0 } : { duration: 0.8, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={shouldReduce ? undefined : { y: -6 }}
       className={`glow-card group relative overflow-hidden squircle rounded-3xl bg-transparent border border-neutral-200 shadow-sm dark:border-white/10 dark:shadow-none min-h-[260px] transition-all duration-500 hover:shadow-md dark:hover:shadow-[0_30px_80px_-20px_hsl(var(--accent-glow)/0.45)] ${t.className}`}
     >
       {/* Studio backdrop — light gray in light mode, deep void in dark mode */}
@@ -103,6 +104,7 @@ const Card = ({ t, i, onCompare, added }: { t: T; i: number; onCompare: (title: 
 };
 
 export const BentoGrid = ({ onCompare }: { onCompare: (title: string) => void }) => {
+  const shouldReduce = useReducedMotion();
   const [recentlyAdded, setRecentlyAdded] = useState<string | null>(null);
   const [addedSet, setAddedSet] = useState<Set<string>>(new Set());
 
@@ -123,10 +125,10 @@ export const BentoGrid = ({ onCompare }: { onCompare: (title: string) => void })
 
     <div className="container">
       <motion.div
-        initial={{ opacity: 0, y: 24, filter: "blur(12px)" }}
+        initial={shouldReduce ? false : { opacity: 0, y: 24, filter: "blur(12px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        transition={shouldReduce ? { duration: 0 } : { duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         className="text-center max-w-3xl mx-auto mb-16"
       >
         <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 text-[11px] text-muted-foreground mb-6">
@@ -158,9 +160,10 @@ export const BentoGrid = ({ onCompare }: { onCompare: (title: string) => void })
     {recentlyAdded && (
       <motion.div
         key={recentlyAdded}
-        initial={{ opacity: 0, y: 20 }}
+        initial={shouldReduce ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
+        exit={shouldReduce ? { opacity: 0 } : { opacity: 0, y: 20 }}
+        transition={shouldReduce ? { duration: 0 } : undefined}
         className="fixed bottom-24 md:bottom-28 left-1/2 -translate-x-1/2 z-[60] glass-strong squircle px-4 py-2.5 text-sm inline-flex items-center gap-2 shadow-2xl"
       >
         <span className="h-5 w-5 grid place-items-center rounded-full bg-emerald-500 text-white">

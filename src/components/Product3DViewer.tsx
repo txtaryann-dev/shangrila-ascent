@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { RotateCw, Maximize2 } from "lucide-react";
 import { useState } from "react";
 import { AuroraPhone3D } from "./AuroraPhone3D";
@@ -8,13 +8,14 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
   const [angle, setAngle] = useState(15);
   const [dragging, setDragging] = useState(false);
   const [startX, setStartX] = useState(0);
+  const shouldReduce = useReducedMotion();
 
   return (
     <section className="relative py-24" id="viewer">
       <div className="container grid lg:grid-cols-2 gap-12 items-center">
         <motion.div
-          initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.8 }}
+          initial={shouldReduce ? false : { opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }} transition={shouldReduce ? { duration: 0 } : { duration: 0.8 }}
         >
           <p className="text-sm text-accent font-medium tracking-wider uppercase">Interactive · Aurora Pro</p>
           <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight mt-2">Inspect every angle.</h2>
@@ -45,8 +46,8 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.92 }} whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          initial={shouldReduce ? false : { opacity: 0, scale: 0.92 }} whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }} transition={shouldReduce ? { duration: 0 } : { duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="relative aspect-square rounded-[2.5rem] overflow-hidden cursor-grab active:cursor-grabbing select-none
             bg-[radial-gradient(ellipse_at_50%_30%,hsl(var(--accent-glow)/0.2),transparent_60%),radial-gradient(ellipse_at_70%_80%,hsl(280_90%_60%/0.16),transparent_55%),linear-gradient(180deg,hsl(0_0%_6%),hsl(0_0%_2%))]
             border border-white/10 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.06)]"

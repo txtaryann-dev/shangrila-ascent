@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import phone from "@/assets/obsidian-phone.jpg";
 
@@ -10,9 +10,10 @@ const features = [
 
 export const StickyShowcase = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const shouldReduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const rot = useTransform(scrollYProgress, [0, 1], [-8, 8]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1.05, 0.95]);
+  const rot = useTransform(scrollYProgress, [0, 1], shouldReduce ? [0, 0] : [-8, 8]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], shouldReduce ? [1, 1, 1] : [0.95, 1.05, 0.95]);
 
   return (
     <section ref={ref} className="relative">
@@ -35,10 +36,10 @@ export const StickyShowcase = () => {
             {features.map((f, i) => (
               <motion.div
                 key={f.tag}
-                initial={{ opacity: 0, y: 60, filter: "blur(16px)" }}
+                initial={shouldReduce ? false : { opacity: 0, y: 60, filter: "blur(16px)" }}
                 whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 viewport={{ margin: "-30% 0px -30% 0px" }}
-                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                transition={shouldReduce ? { duration: 0 } : { duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               >
                 <p className="text-xs text-[hsl(var(--accent-glow))] tracking-[0.2em] uppercase mb-3">{f.tag}</p>
                 <h3 className="font-display text-3xl md:text-5xl font-bold tracking-tight leading-[1.05]">{f.title}</h3>

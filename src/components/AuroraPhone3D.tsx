@@ -4,7 +4,11 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import auroraPhoto from "@/assets/obsidian-phone.jpg";
 
-function Phone({ rotationY }: { rotationY: number }) {
+/** Check system motion preference without framer-motion (R3F runs outside React DOM). */
+const getPrefersReducedMotion = () =>
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function Phone({ rotationY, shouldReduce }: { rotationY: number; shouldReduce: boolean }) {
   const group = useRef<THREE.Group>(null);
   const photoTex = useLoader(THREE.TextureLoader, auroraPhoto);
 
@@ -17,13 +21,18 @@ function Phone({ rotationY }: { rotationY: number }) {
     photoTex.needsUpdate = true;
   }, [photoTex]);
 
-  // Critically-damped spring toward the target rotation for smooth, jitter-free motion.
+  // Instant snap for reduced motion; critically-damped spring otherwise.
   const current = useRef(THREE.MathUtils.degToRad(rotationY));
   const velocity = useRef(0);
   useFrame((_, dt) => {
     if (!group.current) return;
-    const t = Math.min(dt, 1 / 30);
     const target = THREE.MathUtils.degToRad(rotationY);
+    if (shouldReduce) {
+      current.current = target;
+      group.current.rotation.y = target;
+      return;
+    }
+    const t = Math.min(dt, 1 / 30);
     const stiffness = 90;
     const damping = 18;
     const accel = (target - current.current) * stiffness - velocity.current * damping;
@@ -99,6 +108,7 @@ export const AuroraPhone3D = ({ rotationY }: AuroraPhone3DProps) => {
   // Lazy-mount the canvas only when the viewer scrolls into view to cut initial cost.
   const wrapRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const shouldReduce = getPrefersReducedMotion();
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -134,8 +144,8 @@ export const AuroraPhone3D = ({ rotationY }: AuroraPhone3DProps) => {
             <directionalLight position={[-4, 2, -3]} intensity={0.7} color="#7aa8ff" />
             <pointLight position={[0, -2, 3]} intensity={0.5} color="#1a6cff" />
 
-            <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.4}>
-              <Phone rotationY={rotationY} />
+            <Float speed={shouldReduce ? 0 : 1.2} rotationIntensity={shouldReduce ? 0 : 0.15} floatIntensity={shouldReduce ? 0 : 0.4}>
+              <Phone rotationY={rotationY} shouldReduce={shouldReduce} />
             </Float>
 
             <ContactShadows
