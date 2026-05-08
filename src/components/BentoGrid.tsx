@@ -124,10 +124,10 @@ export const BentoGrid = ({ onCompare }: { onCompare: (title: string) => void })
 
     <div className="container">
       <motion.div
-        initial={{ opacity: 0, y: 24, filter: "blur(12px)" }}
+        initial={shouldReduce ? false : { opacity: 0, y: 24, filter: "blur(12px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        transition={shouldReduce ? { duration: 0 } : { duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         className="text-center max-w-3xl mx-auto mb-16"
       >
         <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 text-[11px] text-muted-foreground mb-6">
