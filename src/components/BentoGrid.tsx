@@ -104,6 +104,7 @@ const Card = ({ t, i, onCompare, added }: { t: T; i: number; onCompare: (title: 
 };
 
 export const BentoGrid = ({ onCompare }: { onCompare: (title: string) => void }) => {
+  const shouldReduce = useReducedMotion();
   const [recentlyAdded, setRecentlyAdded] = useState<string | null>(null);
   const [addedSet, setAddedSet] = useState<Set<string>>(new Set());
 
