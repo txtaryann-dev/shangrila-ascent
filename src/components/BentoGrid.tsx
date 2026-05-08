@@ -160,9 +160,10 @@ export const BentoGrid = ({ onCompare }: { onCompare: (title: string) => void })
     {recentlyAdded && (
       <motion.div
         key={recentlyAdded}
-        initial={{ opacity: 0, y: 20 }}
+        initial={shouldReduce ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
+        exit={shouldReduce ? { opacity: 0 } : { opacity: 0, y: 20 }}
+        transition={shouldReduce ? { duration: 0 } : undefined}
         className="fixed bottom-24 md:bottom-28 left-1/2 -translate-x-1/2 z-[60] glass-strong squircle px-4 py-2.5 text-sm inline-flex items-center gap-2 shadow-2xl"
       >
         <span className="h-5 w-5 grid place-items-center rounded-full bg-emerald-500 text-white">
