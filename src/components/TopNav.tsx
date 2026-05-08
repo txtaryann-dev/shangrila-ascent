@@ -123,10 +123,10 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
       <AnimatePresence>
         {searchOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -8, filter: "blur(8px)" }}
+            initial={shouldReduce ? false : { opacity: 0, y: -8, filter: "blur(8px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -8, filter: "blur(8px)" }}
-            transition={{ duration: 0.25 }}
+            exit={shouldReduce ? { opacity: 0 } : { opacity: 0, y: -8, filter: "blur(8px)" }}
+            transition={shouldReduce ? { duration: 0 } : { duration: 0.25 }}
             className="mt-2 glass-strong squircle p-2 flex items-center gap-2"
           >
             <Search className="h-4 w-4 text-muted-foreground ml-2" />
