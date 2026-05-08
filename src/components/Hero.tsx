@@ -32,9 +32,9 @@ export const Hero = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 20, filter: "blur(12px)" }}
+        initial={shouldReduce ? false : { opacity: 0, y: 20, filter: "blur(12px)" }}
         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        transition={shouldReduce ? { duration: 0 } : { duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         className="text-center mb-10 px-6"
       >
         <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 text-[11px] text-muted-foreground mb-6">
@@ -69,9 +69,9 @@ export const Hero = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={shouldReduce ? false : { opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, duration: 0.7 }}
+        transition={shouldReduce ? { duration: 0 } : { delay: 0.4, duration: 0.7 }}
         className="mt-10 flex items-center gap-3"
       >
         <button className="elastic px-7 py-3 rounded-full bg-foreground text-background text-sm font-medium transition-all hover:shadow-[0_0_40px_hsl(var(--accent-glow)/0.6)] hover:scale-[1.04] active:scale-[0.98]">
