@@ -1,20 +1,22 @@
-import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useScroll, useSpring, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import phone from "@/assets/obsidian-phone.jpg";
 
 export const Hero = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const shouldReduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const yScroll = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  const opacityScroll = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const yScroll = useTransform(scrollYProgress, [0, 1], shouldReduce ? [0, 0] : [0, 80]);
+  const opacityScroll = useTransform(scrollYProgress, [0, 0.8], shouldReduce ? [1, 1] : [1, 0]);
 
   // Mouse parallax
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const rotY = useSpring(useTransform(mx, [-1, 1], [-12, 12]), { stiffness: 80, damping: 20 });
-  const rotX = useSpring(useTransform(my, [-1, 1], [10, -10]), { stiffness: 80, damping: 20 });
+  const rotY = useSpring(useTransform(mx, [-1, 1], shouldReduce ? [0, 0] : [-12, 12]), { stiffness: 80, damping: 20 });
+  const rotX = useSpring(useTransform(my, [-1, 1], shouldReduce ? [0, 0] : [10, -10]), { stiffness: 80, damping: 20 });
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduce) return;
     const r = e.currentTarget.getBoundingClientRect();
     mx.set(((e.clientX - r.left) / r.width - 0.5) * 2);
     my.set(((e.clientY - r.top) / r.height - 0.5) * 2);
