@@ -4,6 +4,10 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import auroraPhoto from "@/assets/obsidian-phone.jpg";
 
+/** Check system motion preference without framer-motion (R3F runs outside React DOM). */
+const getPrefersReducedMotion = () =>
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 function Phone({ rotationY }: { rotationY: number }) {
   const group = useRef<THREE.Group>(null);
   const photoTex = useLoader(THREE.TextureLoader, auroraPhoto);
