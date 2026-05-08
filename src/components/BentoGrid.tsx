@@ -43,15 +43,16 @@ const Card = ({ t, i, onCompare, added }: { t: T; i: number; onCompare: (title: 
     ref.current!.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
   };
   const sb = stockBadge(t.stock);
+  const shouldReduce = useReducedMotion();
   return (
     <motion.div
       ref={ref}
       onMouseMove={move}
-      initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+      initial={shouldReduce ? false : { opacity: 0, y: 30, filter: "blur(10px)" }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -6 }}
+      transition={shouldReduce ? { duration: 0 } : { duration: 0.8, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={shouldReduce ? undefined : { y: -6 }}
       className={`glow-card group relative overflow-hidden squircle rounded-3xl bg-transparent border border-neutral-200 shadow-sm dark:border-white/10 dark:shadow-none min-h-[260px] transition-all duration-500 hover:shadow-md dark:hover:shadow-[0_30px_80px_-20px_hsl(var(--accent-glow)/0.45)] ${t.className}`}
     >
       {/* Studio backdrop — light gray in light mode, deep void in dark mode */}
