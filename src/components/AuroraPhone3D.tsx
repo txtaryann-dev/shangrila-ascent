@@ -138,7 +138,7 @@ export const AuroraPhone3D = ({ rotationY }: AuroraPhone3DProps) => {
             <directionalLight position={[-4, 2, -3]} intensity={0.7} color="#7aa8ff" />
             <pointLight position={[0, -2, 3]} intensity={0.5} color="#1a6cff" />
 
-            <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.4}>
+            <Float speed={shouldReduce ? 0 : 1.2} rotationIntensity={shouldReduce ? 0 : 0.15} floatIntensity={shouldReduce ? 0 : 0.4}>
               <Phone rotationY={rotationY} />
             </Float>
 
