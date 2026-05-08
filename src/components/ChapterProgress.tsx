@@ -8,6 +8,7 @@ interface Section {
 
 export const ChapterProgress = ({ sections }: { sections: Section[] }) => {
   const [active, setActive] = useState(sections[0]?.id);
+  const shouldReduce = useReducedMotion();
 
   useEffect(() => {
     const io = new IntersectionObserver(
@@ -39,6 +40,7 @@ export const ChapterProgress = ({ sections }: { sections: Section[] }) => {
           >
             <motion.span
               animate={{ opacity: on ? 1 : 0, x: on ? 0 : 10 }}
+              transition={shouldReduce ? { duration: 0 } : undefined}
               className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground"
             >
               {s.label}
@@ -48,7 +50,7 @@ export const ChapterProgress = ({ sections }: { sections: Section[] }) => {
                 scale: on ? 1.4 : 1,
                 backgroundColor: on ? "hsl(var(--accent-glow))" : "hsl(var(--muted-foreground) / 0.4)",
               }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              transition={shouldReduce ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 30 }}
               className="block h-1.5 w-1.5 rounded-full shadow-[0_0_8px_hsl(var(--accent-glow)/0.6)]"
             />
           </a>

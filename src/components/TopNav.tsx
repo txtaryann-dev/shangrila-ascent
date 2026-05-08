@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Moon, Search, ShoppingBag, Sun, MapPin, ChevronDown, X } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "./ThemeProvider";
@@ -20,6 +20,7 @@ const dot = (s: string) =>
 
 export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
   const { theme, toggle } = useTheme();
+  const shouldReduce = useReducedMotion();
   const [navOpen, setNavOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -36,9 +37,9 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
 
   return (
     <motion.header
-      initial={{ y: -40, opacity: 0 }}
+      initial={shouldReduce ? false : { y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      transition={shouldReduce ? { duration: 0 } : { duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="fixed top-4 left-1/2 z-50 -translate-x-1/2 px-4 w-[min(1200px,calc(100%-2rem))]"
     >
       <div className="glass-strong squircle rounded-full flex items-center justify-between px-5 py-2.5">
