@@ -8,7 +8,7 @@ import auroraPhoto from "@/assets/obsidian-phone.jpg";
 const getPrefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-function Phone({ rotationY }: { rotationY: number }) {
+function Phone({ rotationY, shouldReduce }: { rotationY: number; shouldReduce: boolean }) {
   const group = useRef<THREE.Group>(null);
   const photoTex = useLoader(THREE.TextureLoader, auroraPhoto);
 
@@ -21,13 +21,18 @@ function Phone({ rotationY }: { rotationY: number }) {
     photoTex.needsUpdate = true;
   }, [photoTex]);
 
-  // Critically-damped spring toward the target rotation for smooth, jitter-free motion.
+  // Instant snap for reduced motion; critically-damped spring otherwise.
   const current = useRef(THREE.MathUtils.degToRad(rotationY));
   const velocity = useRef(0);
   useFrame((_, dt) => {
     if (!group.current) return;
-    const t = Math.min(dt, 1 / 30);
     const target = THREE.MathUtils.degToRad(rotationY);
+    if (shouldReduce) {
+      current.current = target;
+      group.current.rotation.y = target;
+      return;
+    }
+    const t = Math.min(dt, 1 / 30);
     const stiffness = 90;
     const damping = 18;
     const accel = (target - current.current) * stiffness - velocity.current * damping;
@@ -103,6 +108,7 @@ export const AuroraPhone3D = ({ rotationY }: AuroraPhone3DProps) => {
   // Lazy-mount the canvas only when the viewer scrolls into view to cut initial cost.
   const wrapRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const shouldReduce = getPrefersReducedMotion();
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -139,7 +145,7 @@ export const AuroraPhone3D = ({ rotationY }: AuroraPhone3DProps) => {
             <pointLight position={[0, -2, 3]} intensity={0.5} color="#1a6cff" />
 
             <Float speed={shouldReduce ? 0 : 1.2} rotationIntensity={shouldReduce ? 0 : 0.15} floatIntensity={shouldReduce ? 0 : 0.4}>
-              <Phone rotationY={rotationY} />
+              <Phone rotationY={rotationY} shouldReduce={shouldReduce} />
             </Float>
 
             <ContactShadows
