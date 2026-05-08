@@ -1,8 +1,9 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { MessageCircle, Send, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 
 export const ChatAssistant = () => {
+  const shouldReduce = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<{ role: "user" | "ai"; text: string }[]>([
     { role: "ai", text: "Namaste! I'm Sherpa, your AI shopping assistant. How can I help today?" },
