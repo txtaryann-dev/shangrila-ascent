@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion
 import { useMemo, useRef, useState } from "react";
 import { ArrowRight, Calculator, Check, ChevronRight, Shield, BadgeCheck, Star, Truck, Plus } from "lucide-react";
 import { useCurrency } from "./CurrencyProvider";
+import { useCart } from "./CartProvider";
 import { EMIModal } from "./EMIModal";
 
 export interface AddOn {
@@ -38,10 +39,12 @@ export const ProductChapter = ({
   sku, stock = "in", rating = { score: 4.8, count: 312 },
 }: ProductChapterProps) => {
   const { format } = useCurrency();
+  const { addMany } = useCart();
   const ref = useRef<HTMLElement>(null);
   const [emiOpen, setEmiOpen] = useState(false);
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [shipIdx, setShipIdx] = useState(0);
+  const [bundleAdded, setBundleAdded] = useState(false);
 
   const shouldReduce = useReducedMotion();
 
@@ -67,6 +70,32 @@ export const ProductChapter = ({
       next.has(i) ? next.delete(i) : next.add(i);
       return next;
     });
+  };
+
+  const bundleSavings = Math.round(
+    Array.from(selected).reduce((s, i) => s + addOns[i].priceNPR, 0) * 0.05
+  );
+
+  const addBundleToCart = () => {
+    const items = [
+      { sku: productSku, name: title, priceNPR: basePriceNPR, listPriceNPR: basePriceNPR, qty: 1, img: image },
+      ...Array.from(selected).map(i => {
+        const a = addOns[i];
+        const list = a.priceNPR;
+        const price = selected.size > 1 ? Math.round(list * 0.95) : list;
+        return {
+          sku: `${productSku}-ADDON-${i}`,
+          name: a.name,
+          priceNPR: price,
+          listPriceNPR: list,
+          qty: 1,
+          note: selected.size > 1 ? "Bundle −5%" : undefined,
+        };
+      }),
+    ];
+    addMany(items);
+    setBundleAdded(true);
+    setTimeout(() => setBundleAdded(false), 2000);
   };
 
   return (
@@ -278,6 +307,27 @@ export const ProductChapter = ({
                     </button>
                   );
                 })}
+              </div>
+
+              {/* Bundle subtotal + add-to-cart */}
+              <div className="mt-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-xl border border-white/10 bg-foreground/[0.02] px-4 py-3">
+                <div className="text-xs">
+                  <span className="text-muted-foreground">Bundle subtotal</span>{" "}
+                  <span className="font-display text-base font-bold tabular-nums">
+                    {format(basePriceNPR + Array.from(selected).reduce((s, i) => s + addOns[i].priceNPR, 0) - bundleSavings)}
+                  </span>
+                  {bundleSavings > 0 && (
+                    <span className="ml-2 text-[10px] uppercase tracking-wider text-[hsl(var(--accent-glow))]">
+                      −{format(bundleSavings)} bundle
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={addBundleToCart}
+                  className="elastic px-4 py-2 rounded-full bg-foreground text-background text-xs font-semibold hover:scale-[1.03] active:scale-95 transition"
+                >
+                  {bundleAdded ? "✓ Added to bag" : selected.size > 0 ? `Add bundle (${selected.size + 1})` : "Add product to bag"}
+                </button>
               </div>
             </div>
           )}

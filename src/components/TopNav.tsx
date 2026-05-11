@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform, useSpring, useVelocity } from "framer-motion";
 import { Moon, Search, ShoppingBag, Sun, MapPin, ChevronDown, X } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "./ThemeProvider";
@@ -25,6 +25,17 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
 
+  // Magnetic header — react to scroll velocity & position
+  const { scrollY } = useScroll();
+  const velocity = useVelocity(scrollY);
+  const smoothVel = useSpring(velocity, { stiffness: 250, damping: 40 });
+  const absVel = useTransform(smoothVel, v => Math.min(1, Math.abs(v) / 1500));
+  // Compress on scroll down, expand at rest
+  const padY = useTransform(absVel, [0, 1], shouldReduce ? [10, 10] : [10, 4]);
+  const blur = useTransform(absVel, [0, 1], shouldReduce ? [30, 30] : [30, 18]);
+  const scale = useTransform(absVel, [0, 1], shouldReduce ? [1, 1] : [1, 0.97]);
+  const backdropFilter = useTransform(blur, b => `blur(${b}px) saturate(160%)`);
+
   const navLinks: { label: string; href: string }[] = [
     { label: "Phones", href: "#ch-phones" },
     { label: "Laptops", href: "#ch-laptops" },
@@ -40,9 +51,13 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
       initial={shouldReduce ? false : { y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={shouldReduce ? { duration: 0 } : { duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed top-4 left-1/2 z-50 -translate-x-1/2 px-4 w-[min(1200px,calc(100%-2rem))]"
+      style={{ scale }}
+      className="fixed top-4 left-1/2 z-50 -translate-x-1/2 px-4 w-[min(1200px,calc(100%-2rem))] origin-top will-change-transform"
     >
-      <div className="glass-strong squircle rounded-full flex items-center justify-between px-5 py-2.5">
+      <motion.div
+        style={{ paddingTop: padY, paddingBottom: padY, backdropFilter, WebkitBackdropFilter: backdropFilter as unknown as string }}
+        className="glass-strong squircle rounded-full flex items-center justify-between px-5 transition-shadow"
+      >
         <div className="flex items-center gap-2 shrink-0">
           <a href="#" className="flex items-center gap-2 font-semibold tracking-tight text-[15px]">
             <span className="grid h-7 w-7 place-items-center rounded-full bg-foreground text-background text-[11px] font-bold">SW</span>
@@ -118,7 +133,7 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
             <span className="absolute -top-0.5 -right-0.5 h-4 w-4 grid place-items-center rounded-full bg-[hsl(var(--accent-glow))] text-[10px] font-semibold text-white">2</span>
           </button>
         </div>
-      </div>
+      </motion.div>
 
       <AnimatePresence>
         {searchOpen && (

@@ -1,11 +1,12 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { RotateCw, Maximize2 } from "lucide-react";
+import { RotateCw, Maximize2, Layers } from "lucide-react";
 import { useState } from "react";
 import { AuroraPhone3D } from "./AuroraPhone3D";
 
 /** Real-time 3D viewer of the Aurora Pro device. */
 export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
   const [angle, setAngle] = useState(15);
+  const [explode, setExplode] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const shouldReduce = useReducedMotion();
@@ -30,6 +31,35 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
             <button onClick={onOpenSpec} className="elastic px-5 py-2.5 rounded-full bg-foreground text-background text-sm inline-flex items-center gap-2">
               <Maximize2 className="h-4 w-4" /> Full Specs
             </button>
+          </div>
+
+          {/* Exploded view control */}
+          <div className="mt-6 glass rounded-2xl p-4">
+            <div className="flex items-center justify-between mb-2">
+              <div className="inline-flex items-center gap-2 text-xs">
+                <Layers className="h-3.5 w-3.5 text-accent" />
+                <span className="font-medium">Exploded view</span>
+              </div>
+              <span className="text-[11px] text-muted-foreground tabular-nums">{Math.round(explode * 100)}%</span>
+            </div>
+            <input
+              type="range" min={0} max={1} step={0.01}
+              value={explode}
+              onChange={(e) => setExplode(Number(e.target.value))}
+              className="w-full accent-foreground"
+              aria-label="Exploded view amount"
+            />
+            <div className="mt-3 grid grid-cols-3 gap-2 text-[10px]">
+              <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                <span className="h-2 w-2 rounded-full bg-[#1a6cff]" /> A18 Pro chip
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                <span className="h-2 w-2 rounded-full bg-[#2dd4a8]" /> 4422 mAh battery
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                <span className="h-2 w-2 rounded-full bg-[#ff6b35]" /> 48MP camera
+              </span>
+            </div>
           </div>
           <ul className="mt-8 space-y-3 text-sm">
             {[
@@ -85,7 +115,7 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
 
           {/* 3D Canvas */}
           <div className="absolute inset-0">
-            <AuroraPhone3D rotationY={angle} />
+            <AuroraPhone3D rotationY={angle} explode={explode} />
           </div>
 
           {/* Corner crosshair markers */}
