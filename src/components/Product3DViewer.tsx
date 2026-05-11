@@ -32,6 +32,35 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
               <Maximize2 className="h-4 w-4" /> Full Specs
             </button>
           </div>
+
+          {/* Exploded view control */}
+          <div className="mt-6 glass rounded-2xl p-4">
+            <div className="flex items-center justify-between mb-2">
+              <div className="inline-flex items-center gap-2 text-xs">
+                <Layers className="h-3.5 w-3.5 text-accent" />
+                <span className="font-medium">Exploded view</span>
+              </div>
+              <span className="text-[11px] text-muted-foreground tabular-nums">{Math.round(explode * 100)}%</span>
+            </div>
+            <input
+              type="range" min={0} max={1} step={0.01}
+              value={explode}
+              onChange={(e) => setExplode(Number(e.target.value))}
+              className="w-full accent-foreground"
+              aria-label="Exploded view amount"
+            />
+            <div className="mt-3 grid grid-cols-3 gap-2 text-[10px]">
+              <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                <span className="h-2 w-2 rounded-full bg-[#1a6cff]" /> A18 Pro chip
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                <span className="h-2 w-2 rounded-full bg-[#2dd4a8]" /> 4422 mAh battery
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                <span className="h-2 w-2 rounded-full bg-[#ff6b35]" /> 48MP camera
+              </span>
+            </div>
+          </div>
           <ul className="mt-8 space-y-3 text-sm">
             {[
               "Real-time WebGL rendering",
