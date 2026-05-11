@@ -70,28 +70,36 @@ function Phone({ rotationY, explode, shouldReduce }: { rotationY: number; explod
         <meshStandardMaterial color="#0d0d10" metalness={1} roughness={0.32} />
       </RoundedBox>
 
-      {/* Back cover — exact Aurora Pro photo */}
-      <mesh position={[0, 0, -D / 2 - 0.001]} rotation={[0, Math.PI, 0]}>
+      {/* Back cover */}
+      <mesh ref={backRef} position={[0, 0, -D / 2 - 0.001]} rotation={[0, Math.PI, 0]}>
         <planeGeometry args={[W - 0.04, H - 0.04]} />
         <meshBasicMaterial map={photoTex} toneMapped={false} />
       </mesh>
 
-      {/* Front screen — exact Aurora Pro photo as the display */}
-      <mesh position={[0, 0, D / 2 + 0.001]}>
+      {/* Front screen */}
+      <mesh ref={frontRef} position={[0, 0, D / 2 + 0.001]}>
         <planeGeometry args={[W - 0.12, H - 0.12]} />
         <meshBasicMaterial map={photoTex} toneMapped={false} />
       </mesh>
 
-      {/* Single subtle glass overlay (transparent only — no transmission) */}
-      <mesh position={[0, 0, D / 2 + 0.003]}>
+      {/* Glass overlay */}
+      <mesh ref={glassRef} position={[0, 0, D / 2 + 0.003]}>
         <planeGeometry args={[W - 0.12, H - 0.12]} />
-        <meshStandardMaterial
-          transparent
-          opacity={0.12}
-          roughness={0.05}
-          metalness={0}
-          color="#ffffff"
-        />
+        <meshStandardMaterial transparent opacity={0.12} roughness={0.05} metalness={0} color="#ffffff" />
+      </mesh>
+
+      {/* Internal components — visible when exploded */}
+      <mesh ref={chipRef} position={[0, -0.4, 0]}>
+        <planeGeometry args={[0.6, 0.6]} />
+        <meshStandardMaterial transparent opacity={0} color="#1a6cff" emissive="#1a6cff" emissiveIntensity={0.4} />
+      </mesh>
+      <mesh ref={batteryRef} position={[0, 0.6, 0]}>
+        <planeGeometry args={[1.2, 1.4]} />
+        <meshStandardMaterial transparent opacity={0} color="#2dd4a8" emissive="#2dd4a8" emissiveIntensity={0.3} />
+      </mesh>
+      <mesh ref={cameraRef} position={[-0.4, 1.0, -D / 2 - 0.001]}>
+        <circleGeometry args={[0.18, 32]} />
+        <meshStandardMaterial transparent opacity={0} color="#ff6b35" emissive="#ff6b35" emissiveIntensity={0.5} />
       </mesh>
 
       {/* Dynamic island */}
