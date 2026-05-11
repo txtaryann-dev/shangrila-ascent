@@ -1,11 +1,12 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { RotateCw, Maximize2 } from "lucide-react";
+import { RotateCw, Maximize2, Layers } from "lucide-react";
 import { useState } from "react";
 import { AuroraPhone3D } from "./AuroraPhone3D";
 
 /** Real-time 3D viewer of the Aurora Pro device. */
 export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
   const [angle, setAngle] = useState(15);
+  const [explode, setExplode] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const shouldReduce = useReducedMotion();
