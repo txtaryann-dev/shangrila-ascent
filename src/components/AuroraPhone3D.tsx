@@ -8,7 +8,7 @@ import auroraPhoto from "@/assets/obsidian-phone.jpg";
 const getPrefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-function Phone({ rotationY, shouldReduce }: { rotationY: number; shouldReduce: boolean }) {
+function Phone({ rotationY, explode, shouldReduce }: { rotationY: number; explode: number; shouldReduce: boolean }) {
   const group = useRef<THREE.Group>(null);
   const photoTex = useLoader(THREE.TextureLoader, auroraPhoto);
 
