@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform, useSpring, useVelocity } from "framer-motion";
 import { Moon, Search, ShoppingBag, Sun, MapPin, ChevronDown, X } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "./ThemeProvider";
