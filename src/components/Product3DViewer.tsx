@@ -115,7 +115,7 @@ export const Product3DViewer = ({ onOpenSpec }: { onOpenSpec: () => void }) => {
 
           {/* 3D Canvas */}
           <div className="absolute inset-0">
-            <AuroraPhone3D rotationY={angle} />
+            <AuroraPhone3D rotationY={angle} explode={explode} />
           </div>
 
           {/* Corner crosshair markers */}
