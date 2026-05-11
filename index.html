@@ -21,6 +21,18 @@
 </head>
 
   <body>
+    <script>
+      // Apply theme class before paint to prevent FOUC and ensure toggle works from first load
+      (function () {
+        try {
+          var t = localStorage.getItem('sw-theme') || 'dark';
+          if (t === 'dark') document.documentElement.classList.add('dark');
+          document.documentElement.style.colorScheme = t;
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
