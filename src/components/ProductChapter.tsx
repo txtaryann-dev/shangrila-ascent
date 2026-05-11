@@ -39,10 +39,12 @@ export const ProductChapter = ({
   sku, stock = "in", rating = { score: 4.8, count: 312 },
 }: ProductChapterProps) => {
   const { format } = useCurrency();
+  const { addMany } = useCart();
   const ref = useRef<HTMLElement>(null);
   const [emiOpen, setEmiOpen] = useState(false);
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [shipIdx, setShipIdx] = useState(0);
+  const [bundleAdded, setBundleAdded] = useState(false);
 
   const shouldReduce = useReducedMotion();
 
