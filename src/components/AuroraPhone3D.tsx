@@ -171,7 +171,7 @@ export const AuroraPhone3D = ({ rotationY, explode = 0 }: AuroraPhone3DProps) =>
             <pointLight position={[0, -2, 3]} intensity={0.5} color="#1a6cff" />
 
             <Float speed={shouldReduce ? 0 : 1.2} rotationIntensity={shouldReduce ? 0 : 0.15} floatIntensity={shouldReduce ? 0 : 0.4}>
-              <Phone rotationY={rotationY} shouldReduce={shouldReduce} />
+              <Phone rotationY={rotationY} explode={explode} shouldReduce={shouldReduce} />
             </Float>
 
             <ContactShadows
