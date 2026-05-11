@@ -24,21 +24,38 @@ function Phone({ rotationY, explode, shouldReduce }: { rotationY: number; explod
   // Instant snap for reduced motion; critically-damped spring otherwise.
   const current = useRef(THREE.MathUtils.degToRad(rotationY));
   const velocity = useRef(0);
+  const explodeRef = useRef(explode);
+  const backRef = useRef<THREE.Mesh>(null);
+  const frontRef = useRef<THREE.Mesh>(null);
+  const glassRef = useRef<THREE.Mesh>(null);
+  const chipRef = useRef<THREE.Mesh>(null);
+  const batteryRef = useRef<THREE.Mesh>(null);
+  const cameraRef = useRef<THREE.Mesh>(null);
   useFrame((_, dt) => {
     if (!group.current) return;
     const target = THREE.MathUtils.degToRad(rotationY);
+    const t = Math.min(dt, 1 / 30);
     if (shouldReduce) {
       current.current = target;
       group.current.rotation.y = target;
-      return;
+      explodeRef.current = explode;
+    } else {
+      const stiffness = 90;
+      const damping = 18;
+      const accel = (target - current.current) * stiffness - velocity.current * damping;
+      velocity.current += accel * t;
+      current.current += velocity.current * t;
+      group.current.rotation.y = current.current;
+      explodeRef.current += (explode - explodeRef.current) * Math.min(1, t * 6);
     }
-    const t = Math.min(dt, 1 / 30);
-    const stiffness = 90;
-    const damping = 18;
-    const accel = (target - current.current) * stiffness - velocity.current * damping;
-    velocity.current += accel * t;
-    current.current += velocity.current * t;
-    group.current.rotation.y = current.current;
+    const e = explodeRef.current;
+    const D = 0.18;
+    if (backRef.current) backRef.current.position.z = -D / 2 - 0.001 - e * 0.7;
+    if (frontRef.current) frontRef.current.position.z = D / 2 + 0.001 + e * 0.7;
+    if (glassRef.current) glassRef.current.position.z = D / 2 + 0.003 + e * 1.0;
+    if (chipRef.current) { chipRef.current.position.z = -e * 0.25; (chipRef.current.material as THREE.Material).opacity = e; }
+    if (batteryRef.current) { batteryRef.current.position.z = -e * 0.25; (batteryRef.current.material as THREE.Material).opacity = e; }
+    if (cameraRef.current) { cameraRef.current.position.z = -D / 2 - 0.001 - e * 1.4; (cameraRef.current.material as THREE.Material).opacity = e; }
   });
 
   const W = 1.5;
