@@ -133,7 +133,7 @@ export const TopNav = ({ onOpenBag }: { onOpenBag: () => void }) => {
             <span className="absolute -top-0.5 -right-0.5 h-4 w-4 grid place-items-center rounded-full bg-[hsl(var(--accent-glow))] text-[10px] font-semibold text-white">2</span>
           </button>
         </div>
-      </div>
+      </motion.div>
 
       <AnimatePresence>
         {searchOpen && (
