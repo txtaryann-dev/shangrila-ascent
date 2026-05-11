@@ -478,13 +478,22 @@ export const Wholesale = ({ onOpenBag }: { onOpenBag?: () => void }) => {
               <ShoppingBag className="h-4 w-4" />
               Add all to cart · checkout
             </button>
-            <button
-              onClick={exportQuoteCSV}
-              disabled={!lines.length}
-              className="mt-2 w-full elastic px-4 py-2.5 rounded-full glass text-xs text-muted-foreground hover:text-foreground disabled:opacity-40"
-            >
-              Generate quote (CSV)
-            </button>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <button
+                onClick={exportQuotePDF}
+                disabled={!lines.length}
+                className="elastic px-3 py-2.5 rounded-full glass text-xs text-foreground hover:bg-foreground/5 disabled:opacity-40 inline-flex items-center justify-center gap-1.5"
+              >
+                <FileText className="h-3.5 w-3.5" /> Quote (PDF)
+              </button>
+              <button
+                onClick={exportQuoteCSV}
+                disabled={!lines.length}
+                className="elastic px-3 py-2.5 rounded-full glass text-xs text-muted-foreground hover:text-foreground disabled:opacity-40 inline-flex items-center justify-center gap-1.5"
+              >
+                <FileSpreadsheet className="h-3.5 w-3.5" /> Quote (CSV)
+              </button>
+            </div>
           </div>
         </div>
 
