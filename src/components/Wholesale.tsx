@@ -1,6 +1,8 @@
 import { useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, Upload, Plus, Minus, Trash2, FileJson, FileSpreadsheet, Sun, Moon, ShoppingBag, ChevronDown } from "lucide-react";
+import { Download, Upload, Plus, Minus, Trash2, FileJson, FileSpreadsheet, FileText, Sun, Moon, ShoppingBag, ChevronDown } from "lucide-react";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 import { useCurrency } from "./CurrencyProvider";
 import { useTheme } from "./ThemeProvider";
 import { useCart } from "./CartProvider";
