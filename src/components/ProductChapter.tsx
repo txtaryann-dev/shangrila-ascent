@@ -308,6 +308,27 @@ export const ProductChapter = ({
                   );
                 })}
               </div>
+
+              {/* Bundle subtotal + add-to-cart */}
+              <div className="mt-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-xl border border-white/10 bg-foreground/[0.02] px-4 py-3">
+                <div className="text-xs">
+                  <span className="text-muted-foreground">Bundle subtotal</span>{" "}
+                  <span className="font-display text-base font-bold tabular-nums">
+                    {format(basePriceNPR + Array.from(selected).reduce((s, i) => s + addOns[i].priceNPR, 0) - bundleSavings)}
+                  </span>
+                  {bundleSavings > 0 && (
+                    <span className="ml-2 text-[10px] uppercase tracking-wider text-[hsl(var(--accent-glow))]">
+                      −{format(bundleSavings)} bundle
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={addBundleToCart}
+                  className="elastic px-4 py-2 rounded-full bg-foreground text-background text-xs font-semibold hover:scale-[1.03] active:scale-95 transition"
+                >
+                  {bundleAdded ? "✓ Added to bag" : selected.size > 0 ? `Add bundle (${selected.size + 1})` : "Add product to bag"}
+                </button>
+              </div>
             </div>
           )}
 
