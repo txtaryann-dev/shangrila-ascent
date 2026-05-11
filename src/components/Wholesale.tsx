@@ -368,6 +368,7 @@ export const Wholesale = ({ onOpenBag }: { onOpenBag?: () => void }) => {
               { label: "Import quantities", icon: <Upload className="h-3.5 w-3.5" />, onClick: () => onPickFile("quote") },
               { label: "Export quote (CSV)", icon: <Download className="h-3.5 w-3.5" />, onClick: exportQuoteCSV },
               { label: "Export quote (JSON)", icon: <Download className="h-3.5 w-3.5" />, onClick: exportQuoteJSON },
+              { label: "Export quote (PDF)", icon: <FileText className="h-3.5 w-3.5" />, onClick: exportQuotePDF },
             ]}
           />
           <ToolbarMenu
