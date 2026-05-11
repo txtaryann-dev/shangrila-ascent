@@ -158,6 +158,73 @@ export const Wholesale = ({ onOpenBag }: { onOpenBag?: () => void }) => {
     downloadFile("shangrila-wholesale-quote.json", JSON.stringify(payload, null, 2), "application/json");
     showToast("Quote exported as JSON");
   };
+  const exportQuotePDF = () => {
+    if (!lines.length) return showToast("Add quantities first");
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
+    const quoteId = `SW-Q-${Date.now().toString(36).toUpperCase()}`;
+    const today = new Date();
+    const validUntil = new Date(today.getTime() + 14 * 24 * 3600_000);
+    const fmtDate = (d: Date) => d.toISOString().slice(0, 10);
+
+    // Header
+    doc.setFillColor(15, 15, 18);
+    doc.rect(0, 0, 595, 110, "F");
+    doc.setTextColor(255);
+    doc.setFont("helvetica", "bold").setFontSize(22).text("Shangrila World", 40, 50);
+    doc.setFont("helvetica", "normal").setFontSize(10).text("Wholesale Quote", 40, 70);
+    doc.setFontSize(9).setTextColor(180);
+    doc.text(`Quote ID: ${quoteId}`, 555, 40, { align: "right" });
+    doc.text(`Issued: ${fmtDate(today)}`, 555, 55, { align: "right" });
+    doc.text(`Valid until: ${fmtDate(validUntil)}`, 555, 70, { align: "right" });
+    doc.text(`Currency: NPR`, 555, 85, { align: "right" });
+
+    doc.setTextColor(40);
+    doc.setFontSize(10).text(`Total units: ${grand.units}`, 40, 135);
+
+    autoTable(doc, {
+      startY: 150,
+      head: [["SKU", "Product", "Qty", "Unit (Rs)", "Tier", "Disc", "Line total (Rs)"]],
+      body: lines.map(l => [
+        l.sku, l.name, String(l.q),
+        l.priceNPR.toLocaleString("en-IN"),
+        l.tier.label,
+        l.tier.pct ? `−${l.tier.pct}%` : "—",
+        l.total.toLocaleString("en-IN"),
+      ]),
+      headStyles: { fillColor: [15, 15, 18], textColor: 255, fontSize: 9 },
+      bodyStyles: { fontSize: 9, textColor: 40 },
+      alternateRowStyles: { fillColor: [248, 248, 250] },
+      columnStyles: {
+        2: { halign: "right" }, 3: { halign: "right" },
+        5: { halign: "right" }, 6: { halign: "right", fontStyle: "bold" },
+      },
+      margin: { left: 40, right: 40 },
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const finalY = (doc as any).lastAutoTable.finalY + 20;
+    const labelX = 380, valX = 555;
+    doc.setFontSize(10).setTextColor(40);
+    doc.text("Subtotal", labelX, finalY);
+    doc.text(`Rs ${grand.subtotal.toLocaleString("en-IN")}`, valX, finalY, { align: "right" });
+    doc.text("Wholesale discount", labelX, finalY + 16);
+    doc.setTextColor(40, 110, 220).text(`− Rs ${grand.discount.toLocaleString("en-IN")}`, valX, finalY + 16, { align: "right" });
+    doc.setTextColor(40);
+    doc.text("VAT (13%)", labelX, finalY + 32);
+    doc.text(`Rs ${grand.vat.toLocaleString("en-IN")}`, valX, finalY + 32, { align: "right" });
+    doc.setLineWidth(0.5).line(labelX, finalY + 40, 555, finalY + 40);
+    doc.setFont("helvetica", "bold").setFontSize(12);
+    doc.text("Grand total", labelX, finalY + 58);
+    doc.text(`Rs ${grand.total.toLocaleString("en-IN")}`, valX, finalY + 58, { align: "right" });
+
+    doc.setFont("helvetica", "normal").setFontSize(8).setTextColor(120);
+    doc.text(
+      "This quote is an estimate. Final pricing confirmed on PO. Inclusive of 13% VAT. Shangrila World · Kathmandu, Nepal.",
+      40, 800,
+    );
+    doc.save(`shangrila-quote-${quoteId}.pdf`);
+    showToast("Quote PDF generated");
+  };
   const exportCartJSON = () => {
     const cart = lines.map(l => ({ sku: l.sku, name: l.name, quantity: l.q, unit_price_npr: l.priceNPR }));
     if (!cart.length) return showToast("Cart is empty");
