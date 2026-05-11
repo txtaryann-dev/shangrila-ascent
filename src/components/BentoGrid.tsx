@@ -53,10 +53,10 @@ const Card = ({ t, i, onCompare, added }: { t: T; i: number; onCompare: (title: 
       viewport={{ once: true, margin: "-50px" }}
       transition={shouldReduce ? { duration: 0 } : { duration: 0.8, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
       whileHover={shouldReduce ? undefined : { y: -6 }}
-      className={`glow-card group relative overflow-hidden squircle rounded-3xl bg-transparent border border-neutral-200 shadow-sm dark:border-white/10 dark:shadow-none min-h-[260px] transition-all duration-500 hover:shadow-md dark:hover:shadow-[0_30px_80px_-20px_hsl(var(--accent-glow)/0.45)] ${t.className}`}
+      className={`glow-card group relative overflow-hidden squircle rounded-3xl bg-slate-50 dark:bg-zinc-900 border border-neutral-200 shadow-sm dark:border-white/10 dark:shadow-none min-h-[260px] transition-[background-color,border-color,box-shadow,backdrop-filter] duration-500 ease-out hover:shadow-md dark:hover:shadow-[0_30px_80px_-20px_hsl(var(--accent-glow)/0.45)] ${t.className}`}
     >
-      {/* Studio backdrop — light gray in light mode, deep void in dark mode */}
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,#f3f3f3_0%,#e8e8e8_70%,transparent_100%)] dark:bg-[radial-gradient(circle_at_50%_40%,hsl(0_0%_8%)_0%,hsl(0_0%_2%)_70%,transparent_100%)]" />
+      {/* Studio backdrop — soft slate in light, deep zinc in dark */}
+      <div aria-hidden className="absolute inset-0 transition-colors duration-500 bg-[radial-gradient(circle_at_50%_40%,theme(colors.slate.50)_0%,theme(colors.slate.100)_70%,transparent_100%)] dark:bg-[radial-gradient(circle_at_50%_40%,theme(colors.zinc.900)_0%,theme(colors.zinc.950)_70%,transparent_100%)]" />
       <img
         src={t.img} alt={t.title} loading="lazy"
         className="product-img-blend absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
