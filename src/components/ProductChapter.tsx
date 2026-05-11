@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion
 import { useMemo, useRef, useState } from "react";
 import { ArrowRight, Calculator, Check, ChevronRight, Shield, BadgeCheck, Star, Truck, Plus } from "lucide-react";
 import { useCurrency } from "./CurrencyProvider";
+import { useCart } from "./CartProvider";
 import { EMIModal } from "./EMIModal";
 
 export interface AddOn {
