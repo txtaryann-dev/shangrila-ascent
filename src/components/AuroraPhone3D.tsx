@@ -127,9 +127,10 @@ function Phone({ rotationY, explode, shouldReduce }: { rotationY: number; explod
 
 interface AuroraPhone3DProps {
   rotationY: number;
+  explode?: number;
 }
 
-export const AuroraPhone3D = ({ rotationY }: AuroraPhone3DProps) => {
+export const AuroraPhone3D = ({ rotationY, explode = 0 }: AuroraPhone3DProps) => {
   // Lazy-mount the canvas only when the viewer scrolls into view to cut initial cost.
   const wrapRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
