@@ -72,6 +72,32 @@ export const ProductChapter = ({
     });
   };
 
+  const bundleSavings = Math.round(
+    Array.from(selected).reduce((s, i) => s + addOns[i].priceNPR, 0) * 0.05
+  );
+
+  const addBundleToCart = () => {
+    const items = [
+      { sku: productSku, name: title, priceNPR: basePriceNPR, listPriceNPR: basePriceNPR, qty: 1, img: image },
+      ...Array.from(selected).map(i => {
+        const a = addOns[i];
+        const list = a.priceNPR;
+        const price = selected.size > 1 ? Math.round(list * 0.95) : list;
+        return {
+          sku: `${productSku}-ADDON-${i}`,
+          name: a.name,
+          priceNPR: price,
+          listPriceNPR: list,
+          qty: 1,
+          note: selected.size > 1 ? "Bundle −5%" : undefined,
+        };
+      }),
+    ];
+    addMany(items);
+    setBundleAdded(true);
+    setTimeout(() => setBundleAdded(false), 2000);
+  };
+
   return (
     <section ref={ref} id={id} className="relative mt-20 scroll-mt-24">
       {/* Sticky chapter header */}
