@@ -114,7 +114,7 @@ export const LocalLogistics = () => {
                   <MapPin className={`h-3.5 w-3.5 ${sameDay ? "text-emerald-400" : "text-accent"}`} />
                 </div>
                 <div className="font-display text-lg font-bold mt-2">{h.city}</div>
-                <div className="text-[11px] text-muted-foreground">{h.note}</div>
+                <div className="text-[11px] text-muted-foreground">{hubNotes[h.code]}</div>
               </button>
             );
           })}
