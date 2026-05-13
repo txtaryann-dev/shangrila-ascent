@@ -1,13 +1,17 @@
 import { motion } from "framer-motion";
 import { MapPin, Truck, Clock } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { NepalMap, type Hub } from "./NepalMap";
 
-const hubs = [
-  { city: "Kathmandu", eta: "Same day", note: "Free express", code: "KTM", x: 56, y: 58 },
-  { city: "Pokhara",   eta: "1–2 days", note: "Standard",     code: "PKR", x: 39, y: 50 },
-  { city: "Butwal",    eta: "2–3 days", note: "Standard",     code: "BWA", x: 34, y: 70 },
-  { city: "Biratnagar",eta: "2–3 days", note: "Standard",     code: "BIR", x: 80, y: 76 },
+const hubs: Hub[] = [
+  { city: "Kathmandu",  eta: "Same day", code: "KTM", lat: 27.7172, lng: 85.3240 },
+  { city: "Pokhara",    eta: "1–2 days", code: "PKR", lat: 28.2096, lng: 83.9856 },
+  { city: "Butwal",     eta: "2–3 days", code: "BWA", lat: 27.7006, lng: 83.4484 },
+  { city: "Biratnagar", eta: "2–3 days", code: "BIR", lat: 26.4525, lng: 87.2718 },
 ];
+const hubNotes: Record<string, string> = {
+  KTM: "Free express", PKR: "Standard", BWA: "Standard", BIR: "Standard",
+};
 
 /** Nepal cutoff: 16:00 NPT (UTC+5:45). Returns ms remaining (or 0 if past). */
 const useNptCountdown = () => {
@@ -50,51 +54,9 @@ export const LocalLogistics = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-4">
-          {/* Stylized Nepal map with clickable pins */}
-          <div className="relative glass rounded-2xl p-5 overflow-hidden min-h-[280px]">
-            <span className="absolute top-3 left-4 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Network · Nepal</span>
-            <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" preserveAspectRatio="none" aria-hidden>
-              {/* Stylized Nepal outline */}
-              <path
-                d="M5,55 C12,40 22,38 30,42 C40,30 55,32 65,40 C75,36 85,42 92,52 C95,62 88,72 78,78 C66,84 50,82 36,80 C22,82 10,72 5,55 Z"
-                fill="hsl(var(--accent-glow) / 0.06)"
-                stroke="hsl(var(--accent-glow) / 0.35)"
-                strokeWidth="0.4"
-              />
-              {/* Animated route from KTM to active hub */}
-              {active !== 0 && (
-                <line
-                  x1={hubs[0].x} y1={hubs[0].y}
-                  x2={hubs[active].x} y2={hubs[active].y}
-                  stroke="hsl(var(--accent-glow))"
-                  strokeWidth="0.5"
-                  strokeDasharray="1.2 1"
-                  className="motion-safe:animate-pulse"
-                />
-              )}
-            </svg>
-            {hubs.map((h, i) => {
-              const on = i === active;
-              const same = h.eta === "Same day";
-              return (
-                <button
-                  key={h.city}
-                  onClick={() => setActive(i)}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 group"
-                  style={{ left: `${h.x}%`, top: `${h.y}%` }}
-                  aria-label={`Select ${h.city}`}
-                >
-                  <span className={`block h-3 w-3 rounded-full transition-all ${
-                    on ? "bg-accent ring-4 ring-accent/30 scale-125"
-                       : same ? "bg-emerald-400 shadow-[0_0_10px_rgb(52_211_153/0.7)]"
-                       : "bg-foreground/60 group-hover:bg-foreground"
-                  }`} />
-                  <span className={`absolute left-1/2 -translate-x-1/2 mt-1 whitespace-nowrap text-[10px] font-medium ${
-                    on ? "text-foreground" : "text-muted-foreground"
-                  }`}>{h.code}</span>
-                </button>
-              );
-            })}
+          {/* Real Nepal map (Leaflet) with updated 2020 boundary */}
+          <div className="relative glass rounded-2xl overflow-hidden">
+            <NepalMap hubs={hubs} active={active} onSelect={setActive} />
           </div>
 
           {/* Live panel */}
@@ -152,7 +114,7 @@ export const LocalLogistics = () => {
                   <MapPin className={`h-3.5 w-3.5 ${sameDay ? "text-emerald-400" : "text-accent"}`} />
                 </div>
                 <div className="font-display text-lg font-bold mt-2">{h.city}</div>
-                <div className="text-[11px] text-muted-foreground">{h.note}</div>
+                <div className="text-[11px] text-muted-foreground">{hubNotes[h.code]}</div>
               </button>
             );
           })}
