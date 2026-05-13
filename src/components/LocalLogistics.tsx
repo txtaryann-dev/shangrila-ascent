@@ -1,13 +1,17 @@
 import { motion } from "framer-motion";
 import { MapPin, Truck, Clock } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { NepalMap, type Hub } from "./NepalMap";
 
-const hubs = [
-  { city: "Kathmandu", eta: "Same day", note: "Free express", code: "KTM", x: 56, y: 58 },
-  { city: "Pokhara",   eta: "1–2 days", note: "Standard",     code: "PKR", x: 39, y: 50 },
-  { city: "Butwal",    eta: "2–3 days", note: "Standard",     code: "BWA", x: 34, y: 70 },
-  { city: "Biratnagar",eta: "2–3 days", note: "Standard",     code: "BIR", x: 80, y: 76 },
+const hubs: Hub[] = [
+  { city: "Kathmandu",  eta: "Same day", code: "KTM", lat: 27.7172, lng: 85.3240 },
+  { city: "Pokhara",    eta: "1–2 days", code: "PKR", lat: 28.2096, lng: 83.9856 },
+  { city: "Butwal",     eta: "2–3 days", code: "BWA", lat: 27.7006, lng: 83.4484 },
+  { city: "Biratnagar", eta: "2–3 days", code: "BIR", lat: 26.4525, lng: 87.2718 },
 ];
+const hubNotes: Record<string, string> = {
+  KTM: "Free express", PKR: "Standard", BWA: "Standard", BIR: "Standard",
+};
 
 /** Nepal cutoff: 16:00 NPT (UTC+5:45). Returns ms remaining (or 0 if past). */
 const useNptCountdown = () => {
